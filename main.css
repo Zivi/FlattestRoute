@@ -1,0 +1,28 @@
+#map-canvas {
+	width: 500px;
+	height: 500px;
+	background-color: #CCC;
+
+}
+
+.place-inputs {
+	display: inline-block;
+}
+
+#go {
+	margin-left: 40px;
+	margin-top: -60px;
+}
+
+.btn {
+	border-radius: 30px;
+}
+
+/*selects all input tags inside of any div with place input class*/
+.place-input input {
+	margin-left: 15px;
+}
+
+#to {
+	margin-left: 35px;
+}

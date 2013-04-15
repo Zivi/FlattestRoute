@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- link to themed version of bootstrap hosted on the internet -->
+	<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootswatch/2.3.1/spacelab/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<title>Flattest route navigation</title>
+</head>
+
+<body>
+	<div class="container">
+	<h1>Flattest Route</h1>
+	<h3>Please enter your route</h3>
+
+	<div class="place-inputs">
+		<div class="place-input">
+			<label>
+				From: <input id="from" type="text">
+			</label>
+		</div>
+		<div class="place-input">
+			<label>
+				To: <input id="to" type="text">
+			</label>
+		</div>
+	</div>
+
+	<button class="btn" id="go">Go</button>
+
+
+	<div id="map-canvas"></div>
+
+
+	<script type="text/javascript" src="https:ro//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="main.js"></script>
+
+
+	<p><a href="https://maps.googleapis.com/maps/api/place/search/json?location=48.855228,2.353134&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0">
+	  click here</a></p>
+
+
+	</div>
+</body>
+
+</html>
