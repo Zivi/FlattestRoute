@@ -1,10 +1,12 @@
 //https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
-$(document).ready(function() {
+$(function() {
 // 	create event handler that will start the calcRoute function when
 // 	the go button is clicked
-	$("#go").click(function() {
-			calcRoute();
+	$("button#go").on("click", function() {
+		calcRoute();
 	});
+
+	initialize_maps();
 });
 
 
@@ -17,11 +19,12 @@ var DirectionsService = new google.maps.DirectionsService();
 var map = null;
 
 
-function initialize() {
+function initialize_maps() {
 	//initialize directions renderer
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	//reference to div map-canvas
-	var mapCanvas = document.getElementById('map-canvas');
+	debugger
+	var mapCanvas = $('#map-canvas').get(0);
 	var mapOptions = {
 		center: new google.maps.LatLng(37.787930,-122.4074990),
 		zoom: 16,
@@ -37,11 +40,11 @@ function initialize() {
 
 function calcRoute() {
 	//create object directions service
-	var start = document.getElementById("start").value;
-	var end = document.getElementById("end").value;
+	var start = $("#start").val();
+	var end = $("#end").val();
 	var request = {
-		origin:start,
-		destination:end,
+		origin: start,
+		destination: end,
 		travelMode: google.maps.TravelMode.DRIVING
 	};
 	DirectionsService.route(request, function(result, status) {
@@ -115,5 +118,3 @@ function calcRoute() {
 // 		shadow: iconBase + 'schools_maps.shadow.png'
 // 	});
 
-
-google.maps.event.addDomListener(window, 'load', initialize);

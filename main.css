@@ -1,3 +1,4 @@
+
 #map-canvas {
 	width: 500px;
 	height: 500px;
@@ -23,6 +24,6 @@
 	margin-left: 15px;
 }
 
-#to {
+#end {
 	margin-left: 35px;
 }
