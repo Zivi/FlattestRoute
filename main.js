@@ -1,30 +1,58 @@
-https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
-
+//https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
+$(document).ready(function() {
+// 	create event handler that will start the calcRoute function when
+// 	the go button is clicked
+	$("#go").click(function() {
+			calcRoute();
+	});
+});
 
 
 
 //API key: AIzaSyAQu2QTu2fe1zuir1GUEW8pai7sTnxmbsg
 
 //at initialization
+var directionsDisplay = null;
+var DirectionsService = new google.maps.DirectionsService();
 var map = null;
 
+
 function initialize() {
+	//initialize directions renderer
+	directionsDisplay = new google.maps.DirectionsRenderer();
 	//reference to div map-canvas
 	var mapCanvas = document.getElementById('map-canvas');
 	var mapOptions = {
 		center: new google.maps.LatLng(37.787930,-122.4074990),
 		zoom: 16,
+		//disables zoom and streetview bar but can stil zoom with mouse
+		disableDefaultUI: true,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		zoomControlStyle: google.maps.ZoomControlStyle.LARGE
+
 	}
 	//create a google maps object
 	map = new google.maps.Map(mapCanvas, mapOptions);
-
-
-
-
-	
+	directionsDisplay.setMap(map);
 }
+
+function calcRoute() {
+	//create object directions service
+	var start = document.getElementById("start").value;
+	var end = document.getElementById("end").value;
+	var request = {
+		origin:start,
+		destination:end,
+		travelMode: google.maps.TravelMode.DRIVING
+	};
+	DirectionsService.route(request, function(result, status) {
+		//checks region for directions eligibility
+		if (status == google.maps.DirectionsStatus.OK) {
+			directionsDisplay.setDirections(result);
+		};
+	});
+};
+
+
 
 
 
