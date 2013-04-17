@@ -27,3 +27,7 @@
 #end {
 	margin-left: 35px;
 }
+
+#directionsPanel div:last-child {
+	display: none;
+}
