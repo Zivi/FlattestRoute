@@ -1,3 +1,16 @@
+//at initialization
+var directionsDisplay = null;
+var DirectionsService = new google.maps.DirectionsService();
+var map = null;
+
+//set variables for elevation
+var elevator = null;
+var chart = null;
+var infowindow = new google.maps.InfoWindow();
+var polyline
+var routes = null;
+
+
 //https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
 $(function() {
 // 	create event handler that will start the calcRoute function when
@@ -11,22 +24,9 @@ $(function() {
 
 
 
-//API key: AIzaSyAQu2QTu2fe1zuir1GUEW8pai7sTnxmbsg
-
-//at initialization
-var directionsDisplay = null;
-var DirectionsService = new google.maps.DirectionsService();
-var map = null;
-
-//set variables for elevation
-var elevator = null;
-var chart = null;
-var infowindow = new google.maps.InfoWindow();
-var polyline
 
 //load the visualization API with the columnchart package
 google.load("visualization", "1", {packages: ["columnchart"]});
-
 
 
 function initialize_maps() {
@@ -49,6 +49,18 @@ function initialize_maps() {
 
 	//add elevation service
 	elevator = new google.maps.ElevationService();
+
+	//change path elevation information if the user clicks on another suggested route
+	google.maps.event.addListener(
+		directionsDisplay,
+		'routeindex_changed',
+		function (event) { 
+			debugger
+			var path = routes[this.routeIndex].overview_path;
+			var distance = routes[this.routeIndex].legs[0].distance.value;
+			drawPath(path, distance);
+		}
+	);
 }
 
 function calcRoute() {
@@ -62,16 +74,13 @@ function calcRoute() {
 		provideRouteAlternatives: true
 	};
 	DirectionsService.route(request, function(result, status) {
+		routes = result.routes;
 		//checks region for directions eligibility
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(result);
 		};
-		//draw the path with the visualization api and elevation service
-		drawPath(
-			result.routes[0].overview_path,
-			result.routes[0].legs[0].distance.value
-		);
 	});
+
 };
 
 
@@ -79,7 +88,7 @@ function drawPath(path, distanceMeters) {
 	//create a new chart in the elevation chart div
 	elevationDiv = $("#elevation_chart").get(0)
 	chart = new google.visualization.ColumnChart(elevationDiv);
-
+	console.log("draw path");
 	//create a path elevation request object with path
 	//need to figure out how to get the path length and divide the samples
 	//up by unit such as 100m
