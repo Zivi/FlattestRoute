@@ -18,6 +18,30 @@ $(function() {
 		calcRoute();
 	});
 
+	$("#slope-up").slider({
+		range: false,
+		min: -0,
+		max: 40,
+		value: [40],
+		change: function(event, ui) {
+			$("#slope-up-label").text($("#slope-up").slider("value"));
+		}
+
+	});
+
+	$("#slope-down").slider({
+		range: false,
+		min: -40,
+		max: 00,
+		value: [-40],
+		change: function(event, ui) {
+			$("#slope-down-label").text($("#slope-down").slider("value"));
+		}
+
+	});
+
+	$("slope-up").slider
+
 	initialize_maps();
 });
 
@@ -68,7 +92,7 @@ function calcRoute() {
 	var request = {
 		origin: start,
 		destination: end,
-		travelMode: google.maps.TravelMode.BICYCLING,
+		travelMode: google.maps.TravelMode.DRIVING,
 		provideRouteAlternatives: true
 	};
 	DirectionsService.route(request, function(result, status) {
@@ -145,7 +169,7 @@ function plotElevation(elevations, status) {
 	//loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 10m
 	debugger
 	for (var i = 0; i < elevations.length - 1; i++) {
-		var slope = calcSlope(elevations[i+1].elevation, elevations[i].elevation, 10);
+		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 10)) * 100;
 		slopeData.addRow(['', slope]);
 	}
 

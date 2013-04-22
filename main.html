@@ -3,6 +3,7 @@
 <head>
 	<!-- link to themed version of bootstrap hosted on the internet -->
 	<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootswatch/2.3.1/spacelab/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/cupertino/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 	<title>Flattest route navigation</title>
 </head>
@@ -23,6 +24,11 @@
 				To: <input id="end" type="text">
 			</label>
 		</div>
+
+		<label>Max slope up (0 -> 40%): <div id="slope-up-label"></div></label><div class="slope" id="slope-up"></div>
+
+		<label>Max slope down (0 -> -40%):<div id="slope-down-label"></div></label><div class="slope" id="slope-down"></div>
+
 	</div>
 
 	<button class="btn" id="go">Go</button>
@@ -37,6 +43,7 @@
 
 	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="main.js"></script>
 
