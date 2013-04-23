@@ -34,6 +34,9 @@ $(function() {
 			maxUpSlope = $("#slope-up").slider("value");
 			// Make API call
 			//if the max up slope is less than an elevation along a route, change the color of the route to red
+			if (maxUpSlope < map.slopeData.getColumnRange(1).max) {
+				alert("too steep");
+			}
 		}
 	});
 
@@ -44,6 +47,14 @@ $(function() {
 		value: [-40],
 		change: function(event, ui) {
 			$("#slope-down-label").text($("#slope-down").slider("value"));
+		},
+		change: function( event, ui ) {
+			maxUpSlope = $("#slope-down").slider("value");
+			// Make API call
+			//if the min up slope is greater than an elevation along a route, change the color of the route to red
+			if (maxUpSlope > map.slopeData.getColumnRange(1).min) {
+				alert("too steep");
+			}
 		}
 
 	});
@@ -76,6 +87,7 @@ function initialize_maps() {
 	}
 	//create a google maps object
 	map = new google.maps.Map(mapCanvas, mapOptions);
+
 	directionsDisplay.setMap(map);
 	//populate panel with written directions
 	directionsDisplay.setPanel($("#directionsPanel").get(0));
@@ -89,7 +101,6 @@ function initialize_maps() {
 		directionsDisplay,
 		'directions_changed',
 		function (event) {
-		computeTotalDistance(directionsDisplay.directions);
 		var path = routes[this.routeIndex].overview_path;
 		var distance = routes[this.routeIndex].legs[0].distance.value;
 			drawPath(path, distance)
@@ -114,7 +125,7 @@ function calcRoute() {
 	var request = {
 		origin: start,
 		destination: end,
-		travelMode: google.maps.TravelMode.BICYCLING,
+		travelMode: google.maps.TravelMode.DRIVING,
 		provideRouteAlternatives: true
 
 	};
@@ -186,21 +197,23 @@ function plotElevation(elevations, status) {
 
 	slopeChartDiv = $("#slope_chart").css('display', 'block');
 	//extract the data to populate the chart
-	var slopeData = new google.visualization.DataTable();
-	slopeData.addColumn('string', 'Sample');
-	slopeData.addColumn('number', 'Slope');
+	map.slopeData = new google.visualization.DataTable();
+	map.slopeData.addColumn('string', 'Sample');
+	map.slopeData.addColumn('number', 'Slope');
+
+
 	//loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 100m
 
 	for (var i = 0; i < elevations.length - 1; i++) {
 		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 100)) * 100;
-		slopeData.addRow(['', slope]);
+		map.slopeData.addRow(['', slope]);
 	}
 
 
 	//draw the chart using the slope data within its div
 	//not sure if this is required because it's in the html
 	var slopeChart = new google.visualization.ColumnChart(slopeChartDiv.get(0));
-	slopeChart.draw(slopeData, {
+	slopeChart.draw(map.slopeData, {
 		width: 640,
 		height: 200,
 		legend: 'none',
