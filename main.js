@@ -1,5 +1,9 @@
+//set ability to make route draggable
+var rendererOptions = {
+	draggable: true
+};
 //at initialization
-var directionsDisplay = null;
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var DirectionsService = new google.maps.DirectionsService();
 var map = null;
 
@@ -23,10 +27,14 @@ $(function() {
 		min: -0,
 		max: 40,
 		value: [40],
-		change: function(event, ui) {
+		slide: function(event, ui) {
 			$("#slope-up-label").text($("#slope-up").slider("value"));
+		},
+		change: function( event, ui ) {
+			maxUpSlope = $("#slope-up").slider("value");
+			// Make API call
+			//if the max up slope is less than an elevation along a route, change the color of the route to red
 		}
-
 	});
 
 	$("#slope-down").slider({
@@ -40,7 +48,7 @@ $(function() {
 
 	});
 
-	$("slope-up").slider
+
 
 	initialize_maps();
 });
@@ -53,8 +61,10 @@ google.load("visualization", "1", {packages: ["columnchart"]});
 
 
 function initialize_maps() {
+	//allow directions to be changed
+
 	//initialize directions renderer
-	directionsDisplay = new google.maps.DirectionsRenderer();
+	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 	//reference to div map-canvas
 	var mapCanvas = $('#map-canvas').get(0);
 	var mapOptions = {
@@ -73,6 +83,18 @@ function initialize_maps() {
 	//add elevation service
 	elevator = new google.maps.ElevationService();
 
+
+	//add listener for directions change
+	google.maps.event.addListener(
+		directionsDisplay,
+		'directions_changed',
+		function (event) {
+		computeTotalDistance(directionsDisplay.directions);
+		var path = routes[this.routeIndex].overview_path;
+		var distance = routes[this.routeIndex].legs[0].distance.value;
+			drawPath(path, distance)
+		}
+	);
 	//change path elevation information if the user clicks on another suggested route
 	google.maps.event.addListener(
 		directionsDisplay,
@@ -92,8 +114,9 @@ function calcRoute() {
 	var request = {
 		origin: start,
 		destination: end,
-		travelMode: google.maps.TravelMode.DRIVING,
+		travelMode: google.maps.TravelMode.BICYCLING,
 		provideRouteAlternatives: true
+
 	};
 	DirectionsService.route(request, function(result, status) {
 		routes = result.routes;
@@ -112,7 +135,7 @@ function drawPath(path, distanceMeters) {
 	//up by unit such as 100m
 	var pathRequest = {
 		'path': path,
-		'samples': Math.floor(distanceMeters / 10)
+		'samples': Math.floor(distanceMeters / 100)
 	}
 	//initiate the path request
 	elevator.getElevationAlongPath(pathRequest, plotElevation);
@@ -166,10 +189,10 @@ function plotElevation(elevations, status) {
 	var slopeData = new google.visualization.DataTable();
 	slopeData.addColumn('string', 'Sample');
 	slopeData.addColumn('number', 'Slope');
-	//loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 10m
-	debugger
+	//loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 100m
+
 	for (var i = 0; i < elevations.length - 1; i++) {
-		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 10)) * 100;
+		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 100)) * 100;
 		slopeData.addRow(['', slope]);
 	}
 
