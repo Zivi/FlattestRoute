@@ -3,16 +3,15 @@ var rendererOptions = {
 	draggable: true
 };
 //at initialization
-var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-var DirectionsService = new google.maps.DirectionsService();
+var directionsDisplay;
 var map = null;
 
 //set variables for elevation
 var elevator = null;
 var infowindow = new google.maps.InfoWindow();
-var polyline
+var polyline;
 var routes = null;
-
+var slopes = null;
 
 //https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
 $(function() {
@@ -31,11 +30,8 @@ $(function() {
 			$("#slope-up-label").text($("#slope-up").slider("value"));
 		},
 		change: function( event, ui ) {
-			maxUpSlope = $("#slope-up").slider("value");
-			// Make API call
-			//if the max up slope is less than an elevation along a route, change the color of the route to red
-			if (maxUpSlope < map.slopeData.getColumnRange(1).max) {
-				alert("too steep");
+			if (map.slopeData) {
+				checkMaxSlope();
 			}
 		}
 	});
@@ -49,12 +45,8 @@ $(function() {
 			$("#slope-down-label").text($("#slope-down").slider("value"));
 		},
 		change: function( event, ui ) {
-			maxUpSlope = $("#slope-down").slider("value");
-			// Make API call
-			//if the min up slope is greater than an elevation along a route, change the color of the route to red
-			if (maxUpSlope > map.slopeData.getColumnRange(1).min) {
-				alert("too steep");
-			}
+			if (map.slopeData)
+				checkMinSlope();
 		}
 
 	});
@@ -95,25 +87,15 @@ function initialize_maps() {
 	//add elevation service
 	elevator = new google.maps.ElevationService();
 
-
-	//add listener for directions change
-	google.maps.event.addListener(
-		directionsDisplay,
-		'directions_changed',
-		function (event) {
-		var path = routes[this.routeIndex].overview_path;
-		var distance = routes[this.routeIndex].legs[0].distance.value;
-			drawPath(path, distance)
-		}
-	);
 	//change path elevation information if the user clicks on another suggested route
 	google.maps.event.addListener(
 		directionsDisplay,
 		'routeindex_changed',
-		function (event) {
+		function () {
+			var routes = this.directions.routes;
 			var path = routes[this.routeIndex].overview_path;
 			var distance = routes[this.routeIndex].legs[0].distance.value;
-			drawPath(path, distance);
+			newPath(path, distance);
 		}
 	);
 }
@@ -129,6 +111,7 @@ function calcRoute() {
 		provideRouteAlternatives: true
 
 	};
+	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
 		routes = result.routes;
 		//checks region for directions eligibility
@@ -140,11 +123,9 @@ function calcRoute() {
 };
 
 
-function drawPath(path, distanceMeters) {
-	//create a path elevation request object with path
-	//need to figure out how to get the path length and divide the samples
-	//up by unit such as 100m
-	var pathRequest = {
+function newPath(path, distanceMeters) {
+	//create a path elevation request object with path, samples set to every 100m
+		var pathRequest = {
 		'path': path,
 		'samples': Math.floor(distanceMeters / 100)
 	}
@@ -159,21 +140,6 @@ function plotElevation(elevations, status) {
 		alert("Error getting elevation data from Google");
 		return;
 	}
-
-	//extract elevation samples from returned results
-	var elevationPath = [];
-	for (var i = 0; i < elevations.length; i++) {
-		elevationPath.push(elevations[i].location);
-	}
-
-	//display the line of the elevation path
-	var pathOptions = {
-		path: elevationPath,
-		strokeColor: '#0000CC',
-		opacity: 0.4,
-		map: map
-	}
-	// polyline = new google.maps.Polyline(pathOptions);
 
 	//create a new chart in the elevation chart div
 	elevationChartDiv = $("#elevation_chart").css('display', 'block');
@@ -201,17 +167,21 @@ function plotElevation(elevations, status) {
 	map.slopeData.addColumn('string', 'Sample');
 	map.slopeData.addColumn('number', 'Slope');
 
-
-	//loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 100m
-
+	// Loop through each element of the elevation data, call the calc slope function using elevations.legth[i] and elevations.length[i+1], distance will be 100m
+	// Create a slopes array so we can search through it later
+	slopes = [];
 	for (var i = 0; i < elevations.length - 1; i++) {
 		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 100)) * 100;
 		map.slopeData.addRow(['', slope]);
+
+		slopes.push({
+			slope: slope,
+			location: midpoint(elevations[i], elevations[i+1])
+		});
 	}
 
-
-	//draw the chart using the slope data within its div
-	//not sure if this is required because it's in the html
+	// Draw the chart using the slope data within its div
+	// Not sure if this is required because it's in the html
 	var slopeChart = new google.visualization.ColumnChart(slopeChartDiv.get(0));
 	slopeChart.draw(map.slopeData, {
 		width: 640,
@@ -219,10 +189,52 @@ function plotElevation(elevations, status) {
 		legend: 'none',
 		titleY: 'slope %'
 	});
+
+	checkMaxSlope();
+	checkMinSlope();
+}
+
+function midpoint(point1, point2) {
+	// To get the midpoint, find the average between each respective point
+	var x = (point1.location.jb + point2.location.jb) / 2
+	var y = (point1.location.kb + point2.location.kb) / 2
+	return new google.maps.LatLng(x, y);
 }
 
 //Calculate slope using elevation change between two points over a given distance in m,  the distance between each measurement.
 function calcSlope(elev1M, elev2M, distanceM) {
-		slope = (elev1M - elev2M) / distanceM;
-		return slope;
+	slope = (elev1M - elev2M) / distanceM;
+	return slope;
+}
+
+function checkMaxSlope () {
+	if (slopes == null) return;
+
+	maxUpSlope = $("#slope-up").slider("value");
+
+	//loops through the slopes array
+	for (var i = 0; i < slopes.length; i++) {
+		if (slopes[i].slope > maxUpSlope) {
+			var marker = new google.maps.Marker({
+		        position: slopes[i].location,
+		        map: map,
+		        title: "Too steep (uphill)",
+		        animation: google.maps.Animation.BOUNCE
+		    });
+		    (function (m) {
+		    	setTimeout(function () {
+			    	m.setAnimation(null);
+			    }, 2000);
+		    })(marker);
+		}
+	}
+}
+
+function checkMinSlope () {
+	maxDownSlope = $("#slope-down").slider("value");
+	// Make API call
+	//if the min up slope is greater than an elevation along a route, change the color of the route to red
+	if (maxDownSlope > map.slopeData.getColumnRange(1).min) {
+		console.log("too steep");
+	}
 }
