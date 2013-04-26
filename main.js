@@ -41,12 +41,13 @@ $(function() {
 		min: -40,
 		max: 00,
 		value: [-40],
-		change: function(event, ui) {
+		slide: function(event, ui) {
 			$("#slope-down-label").text($("#slope-down").slider("value"));
 		},
 		change: function( event, ui ) {
-			if (map.slopeData)
+			if (map.slopeData) {
 				checkMinSlope();
+			}
 		}
 
 	});
@@ -55,8 +56,6 @@ $(function() {
 
 	initialize_maps();
 });
-
-
 
 
 //load the visualization API with the columnchart package
@@ -91,13 +90,15 @@ function initialize_maps() {
 	google.maps.event.addListener(
 		directionsDisplay,
 		'routeindex_changed',
-		function () {
-			var routes = this.directions.routes;
-			var path = routes[this.routeIndex].overview_path;
-			var distance = routes[this.routeIndex].legs[0].distance.value;
-			newPath(path, distance);
-		}
+		update_routes
 	);
+}
+
+function update_routes() {
+	var routes = this.directions.routes;
+	var path = routes[this.routeIndex].overview_path;
+	var distance = routes[this.routeIndex].legs[0].distance.value;
+	newPath(path, distance);
 }
 
 function calcRoute() {
@@ -196,9 +197,9 @@ function plotElevation(elevations, status) {
 
 function midpoint(point1, point2) {
 	// To get the midpoint, find the average between each respective point
-	var x = (point1.location.jb + point2.location.jb) / 2
-	var y = (point1.location.kb + point2.location.kb) / 2
-	return new google.maps.LatLng(x, y);
+	var lat = (point1.location.lat() + point2.location.lat()) / 2
+	var lng = (point1.location.lng() + point2.location.lng()) / 2
+	return new google.maps.LatLng(lat, lng);
 }
 
 //Calculate slope using elevation change between two points over a given distance in m,  the distance between each measurement.
@@ -211,13 +212,16 @@ function checkMaxSlope () {
 	if (slopes == null) return;
 
 	maxUpSlope = $("#slope-up").slider("value");
+	var upImage = 'up_arrow.png';
 
 	//loops through the slopes array
 	for (var i = 0; i < slopes.length; i++) {
 		if (slopes[i].slope > maxUpSlope) {
-			var marker = new google.maps.Marker({
+
+			var upMarker = new google.maps.Marker({
 		        position: slopes[i].location,
 		        map: map,
+		        icon: upImage,
 		        title: "Too steep (uphill)",
 		        animation: google.maps.Animation.BOUNCE
 		    });
@@ -225,16 +229,35 @@ function checkMaxSlope () {
 		    	setTimeout(function () {
 			    	m.setAnimation(null);
 			    }, 2000);
-		    })(marker);
+		    })(upMarker);
 		}
 	}
 }
 
 function checkMinSlope () {
+	if (slopes == null) return;
+
 	maxDownSlope = $("#slope-down").slider("value");
-	// Make API call
-	//if the min up slope is greater than an elevation along a route, change the color of the route to red
-	if (maxDownSlope > map.slopeData.getColumnRange(1).min) {
-		console.log("too steep");
+	var downImage = 'down_arrow.png';
+
+	for (var i = 0; i < slopes.length; i++) {
+		if (slopes[i].slope < maxDownSlope) {
+
+			var marker = new google.maps.Marker ({
+				position: slopes[i].location,
+				map: map,
+				icon: downImage,
+				title: "Too steep (downhill)",
+				animation: google.maps.Animation.BOUNCE
+			});
+			(function (m) {
+				setTimeout(function () {
+					m.setAnimation(null);
+				}, 2000);
+			})(marker);
+		}
 	}
 }
+
+
+
