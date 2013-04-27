@@ -12,13 +12,19 @@ var infowindow = new google.maps.InfoWindow();
 var polyline;
 var routes = null;
 var slopes = null;
-
+var distance = null;
 //https://maps.googleapis.com/maps/api/place/search/json?location=37.787930,-122.4074990&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0
 $(function() {
 // 	create event handler that will start the calcRoute function when
 // 	the go button is clicked
 	$("button#go").on("click", function() {
 		calcRoute();
+	});
+	//Start the calcRoute function if the enter button is pressed
+	$("#target").keypress(function(event) {
+		if (event.which == 13) {
+				calcRoute()
+			}
 	});
 
 	$("#slope-up").slider({
@@ -97,7 +103,7 @@ function initialize_maps() {
 function update_routes() {
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
-	var distance = routes[this.routeIndex].legs[0].distance.value;
+	distance = routes[this.routeIndex].legs[0].distance.value;
 	newPath(path, distance);
 }
 
@@ -109,8 +115,8 @@ function calcRoute() {
 		origin: start,
 		destination: end,
 		travelMode: google.maps.TravelMode.DRIVING,
-		provideRouteAlternatives: true
-
+		provideRouteAlternatives: true,
+		unitSystem: google.maps.UnitSystem.METRIC
 	};
 	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
@@ -128,7 +134,7 @@ function newPath(path, distanceMeters) {
 	//create a path elevation request object with path, samples set to every 100m
 		var pathRequest = {
 		'path': path,
-		'samples': Math.floor(distanceMeters / 100)
+		'samples': 500//Math.floor(distanceMeters / 100)
 	}
 	//initiate the path request
 	elevator.getElevationAlongPath(pathRequest, plotElevation);
@@ -172,7 +178,7 @@ function plotElevation(elevations, status) {
 	// Create a slopes array so we can search through it later
 	slopes = [];
 	for (var i = 0; i < elevations.length - 1; i++) {
-		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, 100)) * 100;
+		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance/500)) * 100;
 		map.slopeData.addRow(['', slope]);
 
 		slopes.push({
