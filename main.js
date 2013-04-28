@@ -1,3 +1,7 @@
+alert = function() {
+	debugger
+}
+
 //set ability to make route draggable
 var rendererOptions = {
 	draggable: true
@@ -31,9 +35,9 @@ $(function() {
 		range: false,
 		min: -0,
 		max: 40,
-		value: [40],
+		value: [15],
 		slide: function(event, ui) {
-			$("#slope-up-label").text($("#slope-up").slider("value"));
+			$("#slope-up-label").text($("#slope-up").slider("value") + "%");
 		},
 		change: function( event, ui ) {
 			if (map.slopeData) {
@@ -41,6 +45,7 @@ $(function() {
 			}
 		}
 	});
+	$("#slope-up-label").text($("#slope-up").slider("value") + "%");
 
 	$("#slope-down").slider({
 		range: false,
@@ -48,15 +53,15 @@ $(function() {
 		max: 00,
 		value: [-40],
 		slide: function(event, ui) {
-			$("#slope-down-label").text($("#slope-down").slider("value"));
+			$("#slope-down-label").text($("#slope-down").slider("value") + "%");
 		},
 		change: function( event, ui ) {
 			if (map.slopeData) {
 				checkMinSlope();
 			}
 		}
-
 	});
+	$("#slope-down-label").text($("#slope-down").slider("value") + "%");
 
 
 
@@ -101,6 +106,7 @@ function initialize_maps() {
 }
 
 function update_routes() {
+	console.log("Route updated")
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
 	distance = routes[this.routeIndex].legs[0].distance.value;
@@ -115,7 +121,7 @@ function calcRoute() {
 		origin: start,
 		destination: end,
 		travelMode: google.maps.TravelMode.DRIVING,
-		provideRouteAlternatives: true,
+		// provideRouteAlternatives: true,
 		unitSystem: google.maps.UnitSystem.METRIC
 	};
 	var DirectionsService = new google.maps.DirectionsService();
@@ -134,7 +140,7 @@ function newPath(path, distanceMeters) {
 	//create a path elevation request object with path, samples set to every 100m
 		var pathRequest = {
 		'path': path,
-		'samples': 500//Math.floor(distanceMeters / 100)
+		'samples': 300//Math.floor(distanceMeters / 100)
 	}
 	//initiate the path request
 	elevator.getElevationAlongPath(pathRequest, plotElevation);
@@ -162,8 +168,8 @@ function plotElevation(elevations, status) {
 	//draw the chart using the data within its div
 	var elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
 	elevationChart.draw(data, {
-		width: 640,
-		height: 200,
+		width: 500,
+		height: 245,
 		legend: 'none',
 		titleY: 'Elevation (m)'
 	});
@@ -178,7 +184,7 @@ function plotElevation(elevations, status) {
 	// Create a slopes array so we can search through it later
 	slopes = [];
 	for (var i = 0; i < elevations.length - 1; i++) {
-		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance/500)) * 100;
+		var slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance/300)) * 100;
 		map.slopeData.addRow(['', slope]);
 
 		slopes.push({
@@ -191,8 +197,8 @@ function plotElevation(elevations, status) {
 	// Not sure if this is required because it's in the html
 	var slopeChart = new google.visualization.ColumnChart(slopeChartDiv.get(0));
 	slopeChart.draw(map.slopeData, {
-		width: 640,
-		height: 200,
+		width: 500,
+		height: 245,
 		legend: 'none',
 		titleY: 'slope %'
 	});
@@ -227,7 +233,12 @@ function checkMaxSlope () {
 			var upMarker = new google.maps.Marker({
 		        position: slopes[i].location,
 		        map: map,
-		        icon: upImage,
+		        icon: {
+		        	path: google.maps.SymbolPath.CIRCLE,
+		        	strokeColor: "red",
+		        	scale: 2.5,
+		        	opacity: 0.4
+		        },
 		        title: "Too steep (uphill)",
 		        animation: google.maps.Animation.BOUNCE
 		    });
@@ -252,7 +263,12 @@ function checkMinSlope () {
 			var marker = new google.maps.Marker ({
 				position: slopes[i].location,
 				map: map,
-				icon: downImage,
+				icon: {
+		        	path: google.maps.SymbolPath.CIRCLE,
+		        	strokeColor: "red",
+		        	scale: 2.5,
+		        	opacity: 0.4
+		        },
 				title: "Too steep (downhill)",
 				animation: google.maps.Animation.BOUNCE
 			});
