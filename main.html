@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- link to themed version of bootstrap hosted on the internet -->
+	<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootswatch/2.3.1/spacelab/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/cupertino/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<title>Flat Route Finder</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="span4">
+				<h1>Flattest Route</h1>
+			</div>
+		</div>
+
+	<div class="row">
+		<div class="span3">
+			<div id="target" class="place-inputs">
+				<div class="place-input">
+					<label>
+						From: <input id="start" type="text" value="Nob Hill, San Francisco, CA">
+					</label>
+				</div>
+				<div class="place-input">
+					<label>
+						To: <input id="end" type="text" value="Russian Hill, San Francisco, CA">
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="span1">
+			<button class="btn" id="go">Go</button>
+		</div>
+		<div class="span4 offset1">
+			<label>
+				Max slope up (0 -> 40%):
+			</label>
+			<div class="slope" id="slope-up"></div>
+			<div id="slope-up-label" class="slope-label">&nbsp;</div>
+
+			<label>
+				Max slope down (0 -> -40%):
+			</label>
+			<div class="slope" id="slope-down"></div>
+			<div id="slope-down-label" class="slope-label">&nbsp;</div>
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div>
+			<div class="span6" id="map-canvas"></div>
+		</div>
+		<div class="span5">
+			<div id="elevation_chart"></div>
+
+			<div id="slope_chart"></div>
+		</div>
+	</div>
+
+	<div id="directionsPanel"></div>
+
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="main.js"></script>
+
+	<p><a href="https://maps.googleapis.com/maps/api/place/search/json?location=48.855228,2.353134&radius=1000&sensor=false&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0">
+
+	</div>
+
+</body>
+
+</html>

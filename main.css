@@ -1,0 +1,41 @@
+#map-canvas {
+	width: 500px;
+	height: 500px;
+	background-color: #CCC;
+
+}
+
+/*.place-inputs {
+	display: inline-block;
+}
+*/
+/*selects all input tags inside of any div with place input class
+.place-input input {
+	margin-left: 15px;
+}*/
+
+/*#end {
+	margin-left: 35px;
+}*/
+
+/*#directionsPanel div:last-child {
+	display: none;
+}*/
+
+.slope {
+	margin: 10px;
+}
+
+#go {
+	margin-top: 50px;
+}
+
+.btn {
+	border-radius: 30px;
+}
+
+.slope-label {
+	position: relative;
+	top: -30px;
+	right: -320px;
+}
