@@ -227,12 +227,12 @@ function plotElevation(elevations, status) {
 	checkMinSlope();
 
 		//Create event listenter on slope to show location and slope
-	// google.visualization.events.addListener(slopeChart, 'onmouseover', slopeHover);
+	google.visualization.events.addListener(slopeChart, 'onmouseover', elevationHover);
+	google.visualization.events.addListener(slopeChart, 'onmouseout',
+		elevationClear);
 }
 
 function elevationHover (x) {
-	//Show elevation on elevation chart.
-	//Show slope on slope chart.
 	//Show location on the map.
 	var location = map.elevationData.locations[x.row];
 	var elevation = map.elevationData.elevation[x.row];
