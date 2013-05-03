@@ -191,7 +191,8 @@ function plotElevation(elevations, status) {
 
 	//Create event listenter on slope to show location and elevation
 	google.visualization.events.addListener(elevationChart, 'onmouseover', elevationHover);
-
+	google.visualization.events.addListener(elevationChart, 'onmouseout',
+		elevationClear);
 	slopeChartDiv = $("#slope_chart").css('display', 'block');
 	//extract the data to populate the chart
 	map.slopeData = new google.visualization.DataTable();
@@ -235,14 +236,17 @@ function elevationHover (x) {
 	//Show location on the map.
 	var location = map.elevationData.locations[x.row];
 	var elevation = map.elevationData.elevation[x.row];
-	var locationMarker = new google.maps.Marker({
+	map.locationMarker = new google.maps.Marker({
 		position: location,
 		map: map,
 		title: "Lat: " + location.lat() + ". Lng: " + location.lng() +
 			". Elevation: " + elevation
 	});
-
 }
+function elevationClear (x) {
+	map.locationMarker.setMap(null);
+}
+
 
 function midpoint(point1, point2) {
 	// To get the midpoint, find the average between each respective point
