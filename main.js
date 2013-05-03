@@ -18,6 +18,7 @@ var routes = null;
 var slopes = null;
 var distance = null;
 var markersArray = [];
+var elevations = [];
 
 //load the visualization API with the columnchart package
 google.load("visualization", "1", {packages: ["columnchart"]});
@@ -82,7 +83,7 @@ function initialize_maps() {
 		zoom: 16,
 		//disables zoom and streetview bar but can stil zoom with mouse
 		disableDefaultUI: true,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 	//create a google maps object
 	map = new google.maps.Map(mapCanvas, mapOptions);
@@ -164,24 +165,32 @@ function plotElevation(elevations, status) {
 	elevationChartDiv = $("#elevation_chart").css('display', 'block');
 
 	//extract the data to populate the chart
-	data = new google.visualization.DataTable();
-	data.addColumn('string', 'Sample');
-	data.addColumn('number', 'Elevation');
+	map.elevationData = new google.visualization.DataTable();
+	map.elevationData.addColumn('string', 'Sample');
+	map.elevationData.addColumn('number', 'Elevation');
+	map.elevationData.locations = [];
+	map.elevationData.elevation = [];
 	for (i = 0; i < elevations.length; i++) {
 		//Change elevation from meters to feet
-		data.addRow(['', (elevations[i].elevation)*3.28084]);
+		map.elevationData.addRow([
+			'',
+			elevations[i].elevation * 3.28084
+		]);
+		map.elevationData.locations.push( elevations[i].location );
+		map.elevationData.elevation.push( elevations[i].elevation * 3.28084 );
 	}
 
 	//draw the chart using the data within its div
 	elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
-	elevationChart.draw(data, {
+	elevationChart.draw(map.elevationData, {
 		width: 500,
 		height: 245,
 		legend: 'none',
 		titleY: 'Elevation (ft)'
 	});
 
-
+	//Create event listenter on slope to show location and elevation
+	google.visualization.events.addListener(elevationChart, 'onmouseover', elevationHover);
 
 	slopeChartDiv = $("#slope_chart").css('display', 'block');
 	//extract the data to populate the chart
@@ -216,12 +225,23 @@ function plotElevation(elevations, status) {
 	checkMaxSlope();
 	checkMinSlope();
 
-	//Create event listenter on slope to show location and elevation
-	google.visualization.events.addListener(elevationChart, 'onmouseover', showLocation);
+		//Create event listenter on slope to show location and slope
+	// google.visualization.events.addListener(slopeChart, 'onmouseover', slopeHover);
 }
 
-function showLocation() {
-	console.log('mouse over!');
+function elevationHover (x) {
+	//Show elevation on elevation chart.
+	//Show slope on slope chart.
+	//Show location on the map.
+	var location = map.elevationData.locations[x.row];
+	var elevation = map.elevationData.elevation[x.row];
+	var locationMarker = new google.maps.Marker({
+		position: location,
+		map: map,
+		title: "Lat: " + location.lat() + ". Lng: " + location.lng() +
+			". Elevation: " + elevation
+	});
+
 }
 
 function midpoint(point1, point2) {
