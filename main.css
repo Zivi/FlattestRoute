@@ -5,22 +5,14 @@
 
 }
 
-/*.place-inputs {
-	display: inline-block;
+/* Fix for google maps info window */
+#map-canvas img {
+  max-width: none;
 }
-*/
-/*selects all input tags inside of any div with place input class
-.place-input input {
-	margin-left: 15px;
-}*/
-
-/*#end {
-	margin-left: 35px;
-}*/
-
-/*#directionsPanel div:last-child {
-	display: none;
-}*/
+#map-canvas label {
+  width: auto;
+  display: inline;
+}
 
 .slope {
 	margin: 10px;
@@ -40,3 +32,7 @@
 	right: -320px;
 }
 
+#content {
+	width:	100px;
+	height: 100px;
+}

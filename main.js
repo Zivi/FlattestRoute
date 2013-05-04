@@ -1,7 +1,3 @@
-alert = function() {
-	debugger
-}
-
 //set ability to make route draggable
 var rendererOptions = {
 	draggable: true
@@ -12,7 +8,6 @@ var map = null;
 
 //set variables for elevation
 var elevator = null;
-var infowindow = new google.maps.InfoWindow();
 var polyline;
 var routes = null;
 var slopes = null;
@@ -88,8 +83,8 @@ function initialize_maps() {
 	//create a google maps object
 	map = new google.maps.Map(mapCanvas, mapOptions);
 
-	var bikeLayer = new google.maps.BicyclingLayer();
-	bikeLayer.setMap(map);
+	// var bikeLayer = new google.maps.BicyclingLayer();
+	// bikeLayer.setMap(map);
 
 	directionsDisplay.setMap(map);
 	//populate panel with written directions
@@ -113,7 +108,12 @@ function clearOverlays() {
 	}
 }
 
+var updating = false;
 function updateRoutes() {
+	if (updating) return;
+	updating = true;
+	setTimeout(function () { updating = false; }, 100);
+	console.log("Updating routes");
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
 	clearOverlays();
@@ -230,18 +230,33 @@ function plotElevation(elevations, status) {
 	google.visualization.events.addListener(slopeChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(slopeChart, 'onmouseout',
 		elevationClear);
+
+}
+
+function deg(slope) {
+	return Math.floor(slope * 45) / 100;
 }
 
 function elevationHover (x) {
 	//Show location on the map.
 	var location = map.elevationData.locations[x.row];
 	var elevation = map.elevationData.elevation[x.row];
+	var slope = slopes[x.row].slope;
+	var contentString = "Elevation: " + Math.round(elevation) + "ft<br>" +
+		"Slope: " + Math.round(slope) + "% (" + deg(slope) + "&#176;)";
+
+
 	map.locationMarker = new google.maps.Marker({
 		position: location,
 		map: map,
-		title: "Lat: " + location.lat() + ". Lng: " + location.lng() +
+		labelContent: "Lat: " + location.lat() + ". Lng: " + location.lng() +
 			". Elevation: " + elevation
 	});
+	//Add info window to the map
+	map.infowindow = new google.maps.InfoWindow({
+		content: contentString
+	});
+	map.infowindow.open(map, map.locationMarker);
 }
 function elevationClear (x) {
 	map.locationMarker.setMap(null);
