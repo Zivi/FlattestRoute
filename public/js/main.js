@@ -10,6 +10,8 @@ var slopes = null;
 var distance = null;
 var markersArray = [];
 var elevations = [];
+var mapPaths = [];
+
 
 //load the visualization API with the columnchart package
 google.load("visualization", "1", {packages: ["columnchart"]});
@@ -42,6 +44,10 @@ function initialize_maps() {
 			strokeOpacity: 0
 		}
 	};
+	//Check if there's a route already drawn
+	// if (mapPath !=  null) {
+	// 	console.log(mapPath.length);
+	// }
 
 	//initialize directions renderer
 	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
@@ -49,7 +55,7 @@ function initialize_maps() {
 	var mapCanvas = $('#map-canvas').get(0);
 	var mapOptions = {
 		center: new google.maps.LatLng(37.787930,-122.4074990),
-		zoom: 16,
+		zoom: 20,
 		//disables zoom and streetview bar but can stil zoom with mouse
 		disableDefaultUI: true,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -73,8 +79,6 @@ function initialize_maps() {
 		'routeindex_changed',
 		updateRoutes
 	);
-
-
 }
 
 function calcRoute() {
@@ -101,6 +105,8 @@ function updateRoutes() {
 	updating = true;
 	setTimeout(function () { updating = false; }, 100);
 	console.log("Updating routes");
+	//check if the path has been populated, if it has been already populated, clear it
+
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
 	distance = routes[this.routeIndex].legs[0].distance.value;
@@ -197,18 +203,26 @@ function plotElevation(elevations, status) {
 	drawPolyline(elevations, slopes);
 }
 
+function removePolylines() {
+	for (var i = 0; i < mapPaths.length; i++) {
+		var path = mapPaths[i];
+		path.setMap(null);
+	}
+
+	mapPaths = [];
+};
+
 function drawPolyline (elevations, slopes) {
 	// Create a polyline between each elevation, colour code by slope
-	//debugger
-	mapPaths = [];
-	//debugger
+
+	removePolylines();
+
 	for (var i = 0; i < slopes.length; i++) {
 		var routePath = [
 			elevations[i].location,
 			elevations[i+1].location
 		];
 
-		//debugger
 		var absSlope = Math.abs(slopes[i].slope);
 		if (absSlope <= 5) {
 			pathColor = "#3CB371"
@@ -222,13 +236,13 @@ function drawPolyline (elevations, slopes) {
 		else {
 			pathColor = "#000000"
 		};
-
-		var mapPath = new google.maps.Polyline({
+		mapPath = new google.maps.Polyline({
 			path: routePath,
 			strokeColor: pathColor,
 			strokeOpacity: 0.5,
 			strokeWeight: 5,
 			draggable: true
+
 		})
 		mapPath.setMap(map);
 		mapPaths.push(mapPath);
@@ -278,4 +292,3 @@ function calcSlope(elev1M, elev2M, distanceM) {
 	slope = (elev1M - elev2M) / distanceM;
 	return slope;
 }
-
