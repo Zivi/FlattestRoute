@@ -4,6 +4,26 @@
 	background-color: #CCC;
 
 }
+.color-index {
+	width: 40px;
+	height: 20px;
+	border: solid 1px;
+}
+#green {
+	background-color: #3CB371;
+}
+#yellow {
+	background-color: #FFFF00;
+}
+#blue {
+	background-color: #3366FF;
+}
+#maroon {
+	background-color: #800000;
+}
+#black {
+	background-color: #000000;
+}
 
 /* Fix for google maps info window */
 #map-canvas img {

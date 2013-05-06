@@ -1,7 +1,3 @@
-//set ability to make route draggable
-var rendererOptions = {
-	draggable: true
-};
 //at initialization
 var directionsDisplay;
 var map = null;
@@ -32,43 +28,21 @@ $(function () {
 		}
 	});
 
-	$("#slope-up").slider({
-		range: false,
-		min: -0,
-		max: 40,
-		value: [15],
-		slide: function(event, ui) {
-			$("#slope-up-label").text($("#slope-up").slider("value") + "%");
-		},
-		change: function( event, ui ) {
-			if (map.slopeData) {
-				checkMaxSlope();
-			}
-		}
-	});
-	$("#slope-up-label").text($("#slope-up").slider("value") + "%");
 
-	$("#slope-down").slider({
-		range: false,
-		min: -40,
-		max: 00,
-		value: [-40],
-		slide: function(event, ui) {
-			$("#slope-down-label").text(
-				$("#slope-down").slider("value") + "%"
-			);
-		},
-		change: function( event, ui ) {
-			if (map.slopeData) {
-				checkMinSlope();
-			}
-		}
-	});
-	$("#slope-down-label").text($("#slope-down").slider("value") + "%");
+
 	initialize_maps();
 });
 
 function initialize_maps() {
+	//set ability to make route draggable
+	var rendererOptions = {
+		draggable: true,
+		hideRouteList: true,
+		polylineOptions: {
+			strokeOpacity: 0
+		}
+	};
+
 	//initialize directions renderer
 	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 	//reference to div map-canvas
@@ -88,7 +62,7 @@ function initialize_maps() {
 
 	directionsDisplay.setMap(map);
 	//populate panel with written directions
-	directionsDisplay.setPanel($("#directionsPanel").get(0));
+	// directionsDisplay.setPanel($("#directionsPanel").get(0));
 
 	//add elevation service
 	elevator = new google.maps.ElevationService();
@@ -99,26 +73,8 @@ function initialize_maps() {
 		'routeindex_changed',
 		updateRoutes
 	);
-}
-//Remove elevation warning markers on map.
-function clearOverlays() {
-	for (var i = 0, len = markersArray.length; i < len; i++) {
-		marker = markersArray.pop();
-		marker.setMap(null);
-	}
-}
 
-var updating = false;
-function updateRoutes() {
-	if (updating) return;
-	updating = true;
-	setTimeout(function () { updating = false; }, 100);
-	console.log("Updating routes");
-	var routes = this.directions.routes;
-	var path = routes[this.routeIndex].overview_path;
-	clearOverlays();
-	distance = routes[this.routeIndex].legs[0].distance.value;
-	newPath(path, distance);
+
 }
 
 function calcRoute() {
@@ -132,7 +88,6 @@ function calcRoute() {
 	};
 	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
-		routes = result.routes;
 		//checks region for directions eligibility
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(result);
@@ -140,12 +95,23 @@ function calcRoute() {
 	});
 };
 
+var updating = false;
+function updateRoutes() {
+	if (updating) return;
+	updating = true;
+	setTimeout(function () { updating = false; }, 100);
+	console.log("Updating routes");
+	var routes = this.directions.routes;
+	var path = routes[this.routeIndex].overview_path;
+	distance = routes[this.routeIndex].legs[0].distance.value;
+	newPath(path, distance);
+}
 
-function newPath(path, distanceMeters) {
+function newPath(path) {
 	//create a path elevation request object with path, samples set to every 100m
 		var pathRequest = {
 		'path': path,
-		'samples': 300	//Math.floor(distanceMeters / 100)
+		'samples': 300
 	}
 	//initiate the path request
 	elevator.getElevationAlongPath(pathRequest, plotElevation);
@@ -223,13 +189,43 @@ function plotElevation(elevations, status) {
 		titleY: 'slope %'
 	});
 
-	checkMaxSlope();
-	checkMinSlope();
-
 		//Create event listenter on slope to show location and slope
 	google.visualization.events.addListener(slopeChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(slopeChart, 'onmouseout',
 		elevationClear);
+
+	drawPolyline(elevations, slopes);
+}
+
+function drawPolyline (elevations, slopes) {
+	// Create a polyline between each elevation, colour code by slope
+	//debugger
+	mapPaths = [];
+	//debugger
+	for (var i = 0; i < slopes.length; i++) {
+		var routePath = [
+			elevations[i].location,
+			elevations[i+1].location
+		];
+
+		//debugger
+		var absSlope = Math.abs(slopes[i].slope);
+		if (absSlope <= 5) {
+			pathColor = "#3CB371"
+		} else {
+			pathColor = "#000000"
+		};
+
+		var mapPath = new google.maps.Polyline({
+			path: routePath,
+			strokeColor: pathColor,
+			strokeOpacity: 0.5,
+			strokeWeight: 5,
+			draggable: true
+		})
+		mapPath.setMap(map);
+		mapPaths.push(mapPath);
+	}
 
 }
 
@@ -274,70 +270,5 @@ function midpoint(point1, point2) {
 function calcSlope(elev1M, elev2M, distanceM) {
 	slope = (elev1M - elev2M) / distanceM;
 	return slope;
-}
-
-function checkMaxSlope () {
-	if (slopes == null) return;
-
-	maxUpSlope = $("#slope-up").slider("value");
-	var upImage = 'up_arrow.png';
-
-	//loops through the slopes array
-	for (var i = 0; i < slopes.length; i++) {
-		if (slopes[i].slope > maxUpSlope) {
-
-			var upMarker = new google.maps.Marker({
-		        position: slopes[i].location,
-		        map: map,
-		        icon: {
-		        	path: google.maps.SymbolPath.CIRCLE,
-		        	strokeColor: "red",
-		        	scale: 2.5,
-		        	opacity: 0.4
-		        },
-		        title: "Too steep (uphill)",
-		        animation: google.maps.Animation.BOUNCE
-		    });
-		    //Add to the markers array to store to clear later
-			markersArray.push(upMarker);
-		    (function (m) {
-		    	setTimeout(function () {
-			    	m.setAnimation(null);
-			    }, 2000);
-		    })(upMarker);
-		}
-
-	}
-}
-
-function checkMinSlope () {
-	if (slopes == null) return;
-
-	maxDownSlope = $("#slope-down").slider("value");
-	var downImage = 'down_arrow.png';
-
-	for (var i = 0; i < slopes.length; i++) {
-		if (slopes[i].slope < maxDownSlope) {
-			var downMarker = new google.maps.Marker ({
-				position: slopes[i].location,
-				map: map,
-				icon: {
-		        	path: google.maps.SymbolPath.CIRCLE,
-		        	strokeColor: "red",
-		        	scale: 2.5,
-		        	opacity: 0.4
-		        },
-				title: "Too steep (downhill)",
-				animation: google.maps.Animation.BOUNCE
-
-			});
-			markersArray.push(downMarker);
-			(function (m) {
-				setTimeout(function () {
-					m.setAnimation(null);
-				}, 2000);
-			})(downMarker);
-		}
-	}
 }
 
