@@ -212,7 +212,14 @@ function drawPolyline (elevations, slopes) {
 		var absSlope = Math.abs(slopes[i].slope);
 		if (absSlope <= 5) {
 			pathColor = "#3CB371"
-		} else {
+		} else if (absSlope <= 10) {
+			pathColor = "#FFFF00"
+		} else if (absSlope <= 15) {
+			pathColor = "#3366FF"
+		} else if (absSlope <= 20) {
+			pathColor = "#FF0000"
+		}
+		else {
 			pathColor = "#000000"
 		};
 
