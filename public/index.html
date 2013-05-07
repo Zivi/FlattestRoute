@@ -21,24 +21,24 @@
 		</div>
 
 	<div class="row">
-		<div class="span3">
-			<div id="target" class="place-inputs">
-				<div class="place-input">
-					<label>
-						From: <input id="start" type="text" value="Nob Hill, San Francisco, CA">
-					</label>
+		<form id="routes">
+			<div class="span3">
+				<div id="target" class="place-inputs">
+					<div class="place-input">
+						<label>
+							From: <input id="start" type="text" value="Nob Hill, San Francisco, CA">
+						</label>
+					</div>
+					<div class="place-input">
+						<label>
+							To: <input id="end" type="text" value="Russian Hill, San Francisco, CA">
+						</label>
+					</div>
 				</div>
-				<div class="place-input">
-					<label>
-						To: <input id="end" type="text" value="Russian Hill, San Francisco, CA">
-					</label>
-				</div>
+				<button class="btn" id="go">Go</button>
 			</div>
-		</div>
-		<div class="span1">
-			<button class="btn" id="go">Go</button>
-		</div>
-		<div class="span4 offset1">
+		</form>
+		<div class="span4 offset4">
 			<table class="table">
 				<th>
 					<td>Difficulty</td>

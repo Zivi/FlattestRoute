@@ -38,8 +38,12 @@
 	margin: 10px;
 }
 
-#go {
-	margin-top: 50px;
+form#routes .span3 {
+	padding-top: 50px;
+}
+
+form input {
+	width: 480px;
 }
 
 .btn {
