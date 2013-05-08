@@ -60,3 +60,8 @@ form input {
 	width:	100px;
 	height: 100px;
 }
+#author {
+	margin-top: 20px;
+	font-size: 12px;
+	color: #999;
+}
