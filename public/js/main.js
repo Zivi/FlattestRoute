@@ -10,30 +10,39 @@ var elevations = [];
 var mapPaths = [];
 
 
-//Load the visualization API with the columnchart package.
+// Load the visualization API with the columnchart package.
 google.load("visualization", "1", {packages: ["columnchart"]});
 
 // Runs after page is loaded.
 $(function () {
-		var startParm = getURLParameter('from');
-	        var endParm = getURLParameter('to');
-		
-// 	Create event handler that will start the calcRoute function when
-// 	the go button is clicked.
+	var from = getURLParameter('from');
+	var to = getURLParameter('to');
+
+	// If this link is being shared set to and from
+	if (from != "null") {
+		$('#from').val(decodeURLParameter(from));
+	}
+
+	if (to != "null") {
+		$('#to').val(decodeURLParameter(to));
+	}
+
+	// 	Create event handler that will start the calcRoute function when
+	// 	the go button is clicked.
 	$("form#routes").on("submit", function (e) {
 		e.preventDefault();
 		calcRoute();
 	});
-	
-//      If this link is being shared set to and from
-	if(startParm!="null"){$('#start').val(decodeURLParameter(startParm));}
-	if(endParm!="null"){$('#end').val(decodeURLParameter(endParm));}
-	
+
 	initialize_maps();
+
+	if (from != "null" && to != "null") {
+		calcRoute();
+	}
 });
 
 function initialize_maps() {
-	//Set ability to make route draggable.
+	// Set ability to make route draggable.
 	var rendererOptions = {
 		draggable: true,
 		hideRouteList: true,
@@ -41,27 +50,27 @@ function initialize_maps() {
 			strokeOpacity: 0
 		}
 	};
-	//Initialize the directions renderer.
+	// Initialize the directions renderer.
 	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 	var mapCanvas = $('#map-canvas').get(0);
 	var mapOptions = {
 		center: new google.maps.LatLng(37.787930,-122.4074990),
 		zoom: 20,
-		//Disables zoom and streetview bar but can stil zoom with mouse.
+		// Disables zoom and streetview bar but can stil zoom with mouse.
 		disableDefaultUI: true,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
-	//Create a google maps object.
+	// Create a google maps object.
 	map = new google.maps.Map(mapCanvas, mapOptions);
 	directionsDisplay.setMap(map);
-	//Populate panel with written directions.
+	// Populate panel with written directions.
 	// directionsDisplay.setPanel($("#directionsPanel").get(0));
 
-	//Add elevation service.
+	// Add elevation service.
 	elevator = new google.maps.ElevationService();
 
-	//Set up listener to change path elevation information if the user
-	//clicks on another suggested route.
+	// Set up listener to change path elevation information if the user
+	// clicks on another suggested route.
 	google.maps.event.addListener(
 		directionsDisplay,
 		'routeindex_changed',
@@ -70,8 +79,8 @@ function initialize_maps() {
 }
 
 function calcRoute() {
-	var start = $("#start").val();
-	var end = $("#end").val();
+	var start = $("#from").val();
+	var end = $("#to").val();
 	var request = {
 		origin: start,
 		destination: end,
@@ -79,13 +88,13 @@ function calcRoute() {
 	};
 	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
-		//Checks region for directions eligibility.
+		// Checks region for directions eligibility.
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(result);
 		};
 	});
-	//update url to include sharable link
-	history.pushState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) );
+	// Update url to include sharable link
+	history.replaceState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) );
 };
 
 var updating = false;
@@ -94,8 +103,8 @@ function updateRoutes() {
 	updating = true;
 	setTimeout(function () { updating = false; }, 100);
 	console.log("Updating routes");
-	//Check if the path has been populated, if it has been already
-	//populated, clear it.
+	// Check if the path has been populated, if it has been already
+	// populated, clear it.
 
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
@@ -108,27 +117,27 @@ function newPath(path) {
 		'path': path,
 		'samples': 300
 	}
-	//Initiate the path request.
+	// Initiate the path request.
 	elevator.getElevationAlongPath(pathRequest, plotElevation);
 }
-//Take an array of elevation result objects, draws a path on the map
-//and plots the elevation profile on the chart.
+// Take an array of elevation result objects, draws a path on the map
+// and plots the elevation profile on the chart.
 function plotElevation(elevations, status) {
 	var slope, data, i, slopeChart, elevationChart, slopeChartDiv;
 	if (status !== google.maps.ElevationStatus.OK) {
 		alert("Error getting elevation data from Google");
 		return;
 	}
-	//Create a new chart in the elevation chart div.
+	// Create a new chart in the elevation chart div.
 	elevationChartDiv = $("#elevation_chart").css('display', 'block');
-	//Extract the data to populate the chart.
+	// Extract the data to populate the chart.
 	map.elevationData = new google.visualization.DataTable();
 	map.elevationData.addColumn('string', 'Sample');
 	map.elevationData.addColumn('number', 'Elevation');
 	map.elevationData.locations = [];
 	map.elevationData.elevation = [];
 	for (i = 0; i < elevations.length; i++) {
-		//Change elevation from meters to feet.
+		// Change elevation from meters to feet.
 		map.elevationData.addRow([
 			'',
 			elevations[i].elevation * 3.28084
@@ -136,7 +145,7 @@ function plotElevation(elevations, status) {
 		map.elevationData.locations.push( elevations[i].location );
 		map.elevationData.elevation.push( elevations[i].elevation * 3.28084 );
 	}
-	//Draw the chart using the data within its div.
+	// Draw the chart using the data within its div.
 	elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
 	elevationChart.draw(map.elevationData, {
 		width: 500,
@@ -145,20 +154,20 @@ function plotElevation(elevations, status) {
 		titleY: 'Elevation (ft)'
 	});
 
-	//Create event listenter on slope to show location and elevation.
+	// Create event listenter on slope to show location and elevation.
 	google.visualization.events.addListener(elevationChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(elevationChart, 'onmouseout',
 		elevationClear);
 	slopeChartDiv = $("#slope_chart").css('display', 'block');
-	//Extract the data to populate the chart.
+	// Extract the data to populate the chart.
 	map.slopeData = new google.visualization.DataTable();
 	map.slopeData.addColumn('string', 'Sample');
 	map.slopeData.addColumn('number', 'Slope');
 
-	//Loop through each element of the elevation data,
-	//call the calc slope function using elevations.legth[i]
-	//and elevations.length[i+1]
-	//Create a slopes array so we can search through it later
+	// Loop through each element of the elevation data,
+	// call the calc slope function using elevations.legth[i]
+	// and elevations.length[i+1]
+	// Create a slopes array so we can search through it later
 	slopes = [];
 	for (i = 0; i < elevations.length - 1; i++) {
 		slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance/300)) * 100;
@@ -178,7 +187,7 @@ function plotElevation(elevations, status) {
 		titleY: 'slope %'
 	});
 
-	//Create event listenter on slope to show location and slope.
+	// Create event listenter on slope to show location and slope.
 	google.visualization.events.addListener(slopeChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(slopeChart, 'onmouseout',
 		elevationClear);
@@ -195,8 +204,8 @@ function removePolylines() {
 };
 
 function drawPolyline (elevations, slopes) {
-	//Create a polyline between each elevation, color code by slope.
-	//Remove any existing polylines before drawing a new polyline.
+	// Create a polyline between each elevation, color code by slope.
+	// Remove any existing polylines before drawing a new polyline.
 	removePolylines();
 
 	for (var i = 0; i < slopes.length; i++) {
@@ -234,7 +243,7 @@ function deg(slope) {
 };
 
 function elevationHover (x) {
-	//Show location on the map.
+	// Show location on the map.
 	var location = map.elevationData.locations[x.row];
 	var elevation = map.elevationData.elevation[x.row];
 	var slope = slopes[x.row].slope;
@@ -247,7 +256,7 @@ function elevationHover (x) {
 		labelContent: "Lat: " + location.lat() + ". Lng: " + location.lng() +
 			". Elevation: " + elevation
 	});
-	//Add info window to the map.
+	// Add info window to the map.
 	map.infowindow = new google.maps.InfoWindow({
 		content: contentString
 	});
@@ -264,17 +273,18 @@ function midpoint(point1, point2) {
 	return new google.maps.LatLng(lat, lng);
 };
 
-//Calculate slope using elevation change between two points
-//over a given distance in m, the distance between each measurement.
+// Calculate slope using elevation change between two points
+// over a given distance in m, the distance between each measurement.
 function calcSlope(elev1M, elev2M, distanceM) {
 	slope = (elev1M - elev2M) / distanceM;
 	return slope;
 };
 
-//gets the 'to' and 'from' url Parameter for sharing links
-//source: http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+// Gets the 'to' and 'from' url Parameter for sharing links
+// Source: http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
 function getURLParameter(name) {
-    return decodeURIComponent((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]); 
+    return decodeURIComponent((RegExp(name + '=' + '(.+?)(&|$)')
+    	.exec(location.search)||[,null])[1]);
 };
 
 //change spaces to plus(+) sign
@@ -284,5 +294,6 @@ function encodeURLParameter(str) {
 
 //change plus(+) sign to spaces
 function decodeURLParameter(str) {
-  return decodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\+/g, " ");
+  return decodeURIComponent(str).replace(/[!'()]/g, escape)
+  	.replace(/\+/g, " ");
 };
