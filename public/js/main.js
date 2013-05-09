@@ -15,12 +15,20 @@ google.load("visualization", "1", {packages: ["columnchart"]});
 
 // Runs after page is loaded.
 $(function () {
+		var startParm = getURLParameter('from');
+	        var endParm = getURLParameter('to');
+		
 // 	Create event handler that will start the calcRoute function when
 // 	the go button is clicked.
 	$("form#routes").on("submit", function (e) {
 		e.preventDefault();
 		calcRoute();
 	});
+	
+//      If this link is being shared set to and from
+	if(startParm!="null"){$('#start').val(decodeURLParameter(startParm));}
+	if(endParm!="null"){$('#end').val(decodeURLParameter(endParm));}
+	
 	initialize_maps();
 });
 
@@ -76,6 +84,8 @@ function calcRoute() {
 			directionsDisplay.setDirections(result);
 		};
 	});
+	//update url to include sharable link
+	history.pushState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) );
 };
 
 var updating = false;
@@ -259,4 +269,20 @@ function midpoint(point1, point2) {
 function calcSlope(elev1M, elev2M, distanceM) {
 	slope = (elev1M - elev2M) / distanceM;
 	return slope;
-}
+};
+
+//gets the 'to' and 'from' url Parameter for sharing links
+//source: http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+function getURLParameter(name) {
+    return decodeURIComponent((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]); 
+};
+
+//change spaces to plus(+) sign
+function encodeURLParameter(str) {
+  return encodeURIComponent(str).replace(/%20/g, "+");
+};
+
+//change plus(+) sign to spaces
+function decodeURLParameter(str) {
+  return decodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\+/g, " ");
+};
