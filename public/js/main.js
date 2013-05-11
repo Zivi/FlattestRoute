@@ -63,12 +63,8 @@ function initialize_maps() {
 	// Create a google maps object.
 	map = new google.maps.Map(mapCanvas, mapOptions);
 	directionsDisplay.setMap(map);
-	// Populate panel with written directions.
-	// directionsDisplay.setPanel($("#directionsPanel").get(0));
-
 	// Add elevation service.
 	elevator = new google.maps.ElevationService();
-
 	// Set up listener to change path elevation information if the user
 	// clicks on another suggested route.
 	google.maps.event.addListener(
@@ -93,6 +89,9 @@ function calcRoute() {
 			directionsDisplay.setDirections(result);
 		};
 	});
+	sharableLink(start, end)
+}
+function sharableLink(start, end) {
 	// Update url to include sharable link
 	history.replaceState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) );
 };
@@ -153,11 +152,17 @@ function plotElevation(elevations, status) {
 		legend: 'none',
 		titleY: 'Elevation (ft)'
 	});
-
+	changeElevation(elevationChart, elevations)
+}
+function changeElevation(elevationChart, elevations) {
 	// Create event listenter on slope to show location and elevation.
 	google.visualization.events.addListener(elevationChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(elevationChart, 'onmouseout',
 		elevationClear);
+
+	plotSlope(elevations)
+}
+function plotSlope(elevations){
 	slopeChartDiv = $("#slope_chart").css('display', 'block');
 	// Extract the data to populate the chart.
 	map.slopeData = new google.visualization.DataTable();
@@ -186,7 +191,9 @@ function plotElevation(elevations, status) {
 		legend: 'none',
 		titleY: 'slope %'
 	});
-
+	changeSlope(slopeChart, elevations, slopes)
+}
+function changeSlope(slopeChart, elevations, slopes) {
 	// Create event listenter on slope to show location and slope.
 	google.visualization.events.addListener(slopeChart, 'onmouseover', elevationHover);
 	google.visualization.events.addListener(slopeChart, 'onmouseout',
@@ -256,6 +263,9 @@ function elevationHover (x) {
 		labelContent: "Lat: " + location.lat() + ". Lng: " + location.lng() +
 			". Elevation: " + elevation
 	});
+	addinfoWindow(contentString)
+}
+function addinfoWindow(contentString) {
 	// Add info window to the map.
 	map.infowindow = new google.maps.InfoWindow({
 		content: contentString
