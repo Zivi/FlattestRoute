@@ -17,6 +17,7 @@ google.load("visualization", "1", {packages: ["columnchart"]});
 $(function () {
 	var from = getURLParameter('from');
 	var to = getURLParameter('to');
+	var travelMode = getURLParameter('travelMode');
 
 	// If this link is being shared set to and from
 	if (from != "null") {
@@ -25,6 +26,10 @@ $(function () {
 
 	if (to != "null") {
 		$('#to').val(decodeURLParameter(to));
+	}
+
+	if (travelMode != "null") {
+		$('#travel-mode').val(decodeURLParameter(travelMode));
 	}
 
 	// 	Create event handler that will start the calcRoute function when
@@ -92,10 +97,11 @@ function initAutoComplete(field) {
 function calcRoute() {
 	var start = $("#from").val();
 	var end = $("#to").val();
+	var travelMode = $("#travel-mode").val();
 	var request = {
 		origin: start,
 		destination: end,
-		travelMode: google.maps.TravelMode.WALKING
+		travelMode: google.maps.TravelMode[travelMode.toUpperCase()]
 	};
 	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
@@ -108,11 +114,12 @@ function calcRoute() {
 			directionsDisplay.setDirections(result);
 		};
 	});
-	sharableLink(start, end)
+	sharableLink(start, end, travelMode);
 }
-function sharableLink(start, end) {
+function sharableLink(start, end, travelMode) {
 	// Update url to include sharable link
-	history.replaceState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) );
+	history.replaceState('null', 'Flat Route Finder', '?from=' + encodeURLParameter(start) + '&to=' + encodeURLParameter(end) +
+		'&travelMode=' + travelMode);
 };
 
 var updating = false;

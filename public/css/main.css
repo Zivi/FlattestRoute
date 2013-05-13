@@ -60,8 +60,15 @@ form input {
 	width:	100px;
 	height: 100px;
 }
+
 #author {
 	margin-top: 20px;
 	font-size: 12px;
 	color: #999;
+}
+
+#travel-mode {
+	width: 100px;
+	margin-left: 10px;
+	margin-top: 11px;
 }
