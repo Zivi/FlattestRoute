@@ -57,10 +57,10 @@ function initialize_maps() {
 	var mapCanvas = $('#map-canvas').get(0);
 	var mapOptions = {
 		center: new google.maps.LatLng(37.787930,-122.4074990),
-		zoom: 20,
+		zoom: 13,
 		// Disables zoom and streetview bar but can stil zoom with mouse.
-		disableDefaultUI: true,
-		mapTypeId: google.maps.MapTypeId.TERRAIN
+		disableDefaultUI: false,
+		mapTypeId: google.maps.MapTypeId.HYBRID
 	};
 	// Create a google maps object.
 	map = new google.maps.Map(mapCanvas, mapOptions);
@@ -95,10 +95,14 @@ function calcRoute() {
 	var request = {
 		origin: start,
 		destination: end,
-		travelMode: google.maps.TravelMode.BICYCLING
+		travelMode: google.maps.TravelMode.WALKING
 	};
 	var DirectionsService = new google.maps.DirectionsService();
 	DirectionsService.route(request, function(result, status) {
+		if (status === "ZERO_RESULTS") {
+			alert("No directions found.");
+			return;
+		}
 		// Checks region for directions eligibility.
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(result);
