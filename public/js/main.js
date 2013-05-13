@@ -80,6 +80,13 @@ function initialize_maps() {
 function initAutoComplete(field) {
 	var input = document.getElementById(field);
 	autocomplete = new google.maps.places.Autocomplete(input);
+
+	// Prevent form submission when selecting place with enter.
+	// http://stackoverflow.com/questions/11388251/google-autocomplete-enter-to-select
+	$('#' + field).keydown(function (e) {
+	  if (e.which == 13 && $('.pac-container:visible').length)
+	  	return false;
+	});
 }
 
 function calcRoute() {
