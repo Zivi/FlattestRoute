@@ -35,6 +35,8 @@ $(function () {
 	});
 
 	initialize_maps();
+	initAutoComplete('from');
+	initAutoComplete('to');
 
 	if (from != "null" && to != "null") {
 		calcRoute();
@@ -65,6 +67,7 @@ function initialize_maps() {
 	directionsDisplay.setMap(map);
 	// Add elevation service.
 	elevator = new google.maps.ElevationService();
+
 	// Set up listener to change path elevation information if the user
 	// clicks on another suggested route.
 	google.maps.event.addListener(
@@ -72,6 +75,11 @@ function initialize_maps() {
 		'routeindex_changed',
 		updateRoutes
 	);
+}
+
+function initAutoComplete(field) {
+	var input = document.getElementById(field);
+	autocomplete = new google.maps.places.Autocomplete(input);
 }
 
 function calcRoute() {
