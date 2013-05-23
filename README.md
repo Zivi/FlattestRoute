@@ -8,6 +8,10 @@ See it in action: http://www.flattestroute.com/
 
 For some insight into how this was developed, see [this blog post](http://zivi.github.io/posts/iterating-to-success/).
 
+----
+
+### A Quick Code Walkthrough
+
 The project plots slope data along a given route. The default navigation is for San Francisco but will work anywhere
 directions on Google Maps works. The [JavaScript code]
 (https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L17) 
@@ -30,10 +34,10 @@ If no directions can be rendered, an error will return.
 (elevation points along the route) based on the direction request made.
  
 
-[Plot Elevation](https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L150) has some interesting elements.
-The elevation data with its corresponding locations were returns the elevations object. The elevation data iterates
-through and plots the elevation chart. The raw data returns the elevation in meters and converts it to feet.
-From the elevation information, [slopeData](https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L204)
-is calculated then plotted onto the slope chart. To show the location of the slope along the path, an event listener shows
-where the slope was located along the path using an [information window]
-(https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L278).
+[plotElevation](https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L150) has some interesting elements.
+The elevation data with its corresponding locations returns the elevations object. The elevation data iterates
+through and plots the elevation chart. The raw data returned has the elevation in meters and so it needs to be converted into feet.
+The slope is calculatedfFrom the elevation information, [slopeData](https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L204)
+then plotted on the slope chart. The slope is simply rise over run, calculated between every adjacent point. 
+To show the location of the slope along the path, an event listener shows where the slope was located along the path
+using an [information window](https://github.com/Zivi/FlattestRoute/blob/master/public/js/main.js#L278).
