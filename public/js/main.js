@@ -173,8 +173,8 @@ function plotElevation(elevations, status) {
 	// Draw the chart using the data within its div.
 	elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
 	elevationChart.draw(map.elevationData, {
-		width: 500,
-		height: 245,
+		// width: 500,
+		// height: 245,
 		legend: 'none',
 		titleY: 'Elevation (ft)'
 	});
@@ -209,11 +209,11 @@ function plotSlope(elevations){
 		});
 	}
 
-	// Draw the chart using the slope data within its div.
+// Draw the chart using the slope data within its div.
 	slopeChart = new google.visualization.ColumnChart(slopeChartDiv.get(0));
 	slopeChart.draw(map.slopeData, {
-		width: 500,
-		height: 245,
+		// width: 500,
+		// height: 245,
 		legend: 'none',
 		titleY: 'slope %'
 	});

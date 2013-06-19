@@ -4,6 +4,17 @@
 	background-color: #CCC;
 
 }
+
+#slope_chart,
+#elevation_chart {
+	width: 500px;
+	height: 250px;
+}
+
+.table {
+	margin-left: -120px;
+}
+
 .color-index {
 	width: 40px;
 	height: 20px;
@@ -71,4 +82,77 @@ form input {
 	width: 100px;
 	margin-left: 10px;
 	margin-top: 11px;
+}
+
+/* Landscape phones and down */
+@media (max-width: 768px) { 
+
+	#map-canvas {
+		width: 100%;
+		height: 350px;
+	} 
+
+	#from,
+	#to {
+		width: 100%;
+	}
+
+	.table {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	#slope_chart,
+	#elevation_chart {
+		width: 100%;
+		height: 250px;
+	}
+
+}
+
+@media (min-width: 769px) and (max-width: 980px) {
+#map-canvas {
+		width: 100%;
+		height: 350px;
+	} 
+
+	#from,
+	#to {
+		width: 300px;
+	}
+
+	.table {
+		width: 300px;
+		margin-left: 0px;
+	}
+
+	#slope_chart,
+	#elevation_chart {
+		width: 750px;
+		height: 175px;
+	}
+
+}
+
+@media (min-width: 981px) and (max-width: 1200px) {
+#map-canvas {
+		width: 500px;
+		height: 350px;
+	} 
+
+	#from,
+	#to {
+		width: 300px;
+	}
+
+	.table {
+		width: 300px;
+	}
+
+	#slope_chart,
+	#elevation_chart {
+		width: 470px;
+		height: 175px;
+	}
+
 }
