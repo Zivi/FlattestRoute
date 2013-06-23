@@ -108,6 +108,10 @@ form input {
 		height: 250px;
 	}
 
+	#github {
+		visibility: hidden;
+	}
+
 }
 
 @media (min-width: 769px) and (max-width: 980px) {
