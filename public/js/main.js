@@ -95,8 +95,8 @@ function initAutoComplete(field) {
 }
 
 function calcRoute() {
-	var start = $("#from").val();
-	var end = $("#to").val();
+	var start = $("#from").val() || $("#from").attr("placeholder");
+	var end = $("#to").val() || $("#to").attr("placeholder");
 	var travelMode = $("#travel-mode").val();
 	var request = {
 		origin: start,
