@@ -12,7 +12,8 @@
 }
 
 .table {
-	margin-left: -120px;
+	margin-left: 0px;
+	margin-bottom: 0px;
 }
 
 .color-index {
@@ -84,6 +85,17 @@ form input {
 	margin-top: 11px;
 }
 
+#travel-label {
+	margin-bottom: 5px;
+}
+
+#distance {
+	margin-top: 10px;
+}
+
+.travel-info {
+	display: none;
+}
 /* Landscape phones and down */
 @media (max-width: 768px) { 
 

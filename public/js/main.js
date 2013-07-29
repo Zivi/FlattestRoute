@@ -5,6 +5,7 @@ var polyline;
 var routes = null;
 var slopes = null;
 var distance = null;
+var duration = null;
 var markersArray = [];
 var elevations = [];
 var mapPaths = [];
@@ -133,8 +134,12 @@ function updateRoutes() {
 
 	var routes = this.directions.routes;
 	var path = routes[this.routeIndex].overview_path;
-	distance = routes[this.routeIndex].legs[0].distance.value;
-	newPath(path, distance);
+	distance = routes[this.routeIndex].legs[0].distance;
+	duration = routes[this.routeIndex].legs[0].duration;
+	$("#distance").html(distance.text);
+	$("#travel-time").html(duration.text);
+	$(".travel-info").show();
+	newPath(path, distance.value);
 }
 
 function newPath(path) {
@@ -201,7 +206,7 @@ function plotSlope(elevations){
 	// Create a slopes array so we can search through it later
 	slopes = [];
 	for (i = 0; i < elevations.length - 1; i++) {
-		slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance/300)) * 100;
+		slope = (calcSlope(elevations[i+1].elevation, elevations[i].elevation, distance.value/300)) * 100;
 		map.slopeData.addRow(['', slope]);
 		slopes.push({
 			slope: slope,
