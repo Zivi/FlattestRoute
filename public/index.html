@@ -33,13 +33,25 @@
 							To: <input id="to" type="text" placeholder="Russian Hill, San Francisco, CA">
 						</label>
 					</div>
+					<div class="place-input selector-wrapper">
+						<label for="travel-mode">Travel mode:</label>
+						<select id="travel-mode">
+							<option>Bicycling</option>
+							<option>Walking</option>
+							<option>Driving</option>
+						</select>
+						&nbsp;
+						<label for="measurement-mode">Units:</label>
+						<select id="measurement-mode">
+							<option value="miles">Miles</option>
+							<option value="km">Kilometers</option>
+						</select>
+					</div>
+					<div class="place-input">
+						<button class="btn" id="go">Go</button>
+					</div>
 				</div>
-				<button class="btn" id="go">Go</button>
-				<select id="travel-mode">
-					<option>Walking</option>
-					<option>Bicycling</option>
-					<option>Driving</option>
-				</select>
+
 
 			</div>
 		</form>
@@ -126,7 +138,7 @@
 
 	  ga('create', 'UA-40731267-1', 'flattestroute.com');
 	  ga('send', 'pageview');
-
+	
 	 </script>
 </body>
 
