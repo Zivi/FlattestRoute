@@ -9,8 +9,9 @@ var duration = null;
 var markersArray = [];
 var elevations = [];
 var mapPaths = [];
-
-
+var measurementMode = null;
+var metricUnit = null;
+var feetMultiplicator = null;
 // Load the visualization API with the columnchart package.
 google.load("visualization", "1", {packages: ["columnchart"]});
 
@@ -32,10 +33,14 @@ $(function () {
 	if (travelMode != "null") {
 		$('#travel-mode').val(decodeURLParameter(travelMode));
 	}
+	
 
 	// 	Create event handler that will start the calcRoute function when
 	// 	the go button is clicked.
 	$("form#routes").on("submit", function (e) {
+		
+		measurementMode = $("#measurement-mode").val();
+		metricUnit = measurementMode == "miles" ? "ft" : "m";
 		e.preventDefault();
 		calcRoute();
 	});
@@ -136,7 +141,15 @@ function updateRoutes() {
 	var path = routes[this.routeIndex].overview_path;
 	distance = routes[this.routeIndex].legs[0].distance;
 	duration = routes[this.routeIndex].legs[0].duration;
-	$("#distance").html(distance.text);
+	
+	/* Shows distance in miles or kilometers, depending on measurement mode. */
+	if(measurementMode == "miles"){
+		$("#distance").html(distance.text);
+	}
+	else{
+		$("#distance").html((distance.value / 1000) + "Km");
+	}
+	
 	$("#travel-time").html(duration.text);
 	$(".travel-info").show();
 	newPath(path, distance.value);
@@ -167,21 +180,33 @@ function plotElevation(elevations, status) {
 	map.elevationData.locations = [];
 	map.elevationData.elevation = [];
 	for (i = 0; i < elevations.length; i++) {
+		
 		// Change elevation from meters to feet.
+		//console.log(measurementMode);
+		if(measurementMode == "miles"){
+			feetMultiplicator = 3.28084;
+		}
+		else{
+			feetMultiplicator = 1;
+		}
+		
 		map.elevationData.addRow([
 			'',
-			elevations[i].elevation * 3.28084
+			elevations[i].elevation * feetMultiplicator
 		]);
 		map.elevationData.locations.push( elevations[i].location );
-		map.elevationData.elevation.push( elevations[i].elevation * 3.28084 );
+		map.elevationData.elevation.push( elevations[i].elevation * feetMultiplicator );
+		
 	}
+	
 	// Draw the chart using the data within its div.
+	
 	elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
 	elevationChart.draw(map.elevationData, {
 		// width: 500,
 		// height: 245,
 		legend: 'none',
-		titleY: 'Elevation (ft)'
+		titleY: 'Elevation ('+metricUnit+')'
 	});
 	changeElevation(elevationChart, elevations)
 }
@@ -285,7 +310,7 @@ function elevationHover (x) {
 	var location = map.elevationData.locations[x.row];
 	var elevation = map.elevationData.elevation[x.row];
 	var slope = slopes[x.row].slope;
-	var contentString = "Elevation: " + Math.round(elevation) + "ft<br>" +
+	var contentString = "Elevation: " + Math.round(elevation) + " " + metricUnit + "<br>" +
 		"Slope: " + Math.round(slope) + "% (" + deg(slope) + "&#176;)";
 
 	map.locationMarker = new google.maps.Marker({

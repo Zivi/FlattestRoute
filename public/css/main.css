@@ -60,6 +60,7 @@ form input {
 
 .btn {
 	border-radius: 30px;
+	margin-bottom: 20px;
 }
 
 .slope-label {
@@ -79,10 +80,18 @@ form input {
 	color: #999;
 }
 
-#travel-mode {
+#travel-mode, #measurement-mode {
 	width: 100px;
 	margin-left: 10px;
 	margin-top: 11px;
+}
+
+.selector-wrapper{
+	width: 400px;
+}
+
+.selector-wrapper input, .selector-wrapper label{
+	display:inline-block;
 }
 
 #travel-label {
@@ -96,6 +105,18 @@ form input {
 .travel-info {
 	display: none;
 }
+
+/* Portrait phones */
+@media (max-width: 320px){
+	.selector-wrapper{
+		width: 100%;
+	}
+	
+	th, td{
+		font-size: 0.9em;
+	}
+}
+
 /* Landscape phones and down */
 @media (max-width: 768px) { 
 
@@ -122,6 +143,10 @@ form input {
 
 	#github {
 		visibility: hidden;
+	}
+	
+	.selector-wrapper{
+		width: 240px;
 	}
 
 }
