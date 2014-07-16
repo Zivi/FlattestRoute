@@ -41,6 +41,14 @@ $(function () {
         $('#measurement-mode').val(decodeURLParameter(measurementMode));
     }
 
+    $("#from-to-switcher").on("click", function (e) {
+        var $fromInput = $("#from");
+        var $toInput = $("#to");
+        var oldFromVal = $fromInput.val();
+        $fromInput.val($toInput.val());
+        $toInput.val(oldFromVal);
+    });
+
     //  Create event handler that will start the calcRoute function when
     //  the go button is clicked.
     $("form#routes").on("submit", function (e) {
