@@ -52,7 +52,7 @@ $(function () {
     //  Create event handler that will start the calcRoute function when
     //  the go button is clicked.
     $("form#routes").on("submit", function (e) {
-        
+
         measurementMode = $("#measurement-mode").val();
         metricUnit = measurementMode == "miles" ? "ft" : "m";
         e.preventDefault();
@@ -155,7 +155,7 @@ function updateRoutes() {
     var path = routes[this.routeIndex].overview_path;
     distance = routes[this.routeIndex].legs[0].distance;
     duration = routes[this.routeIndex].legs[0].duration;
-    
+
     /* Shows distance in miles or kilometres, depending on measurement mode. */
     if(measurementMode == "miles"){
         $("#distance").html(distance.text);
@@ -163,7 +163,7 @@ function updateRoutes() {
     else{
         $("#distance").html((distance.value / 1000) + "Km");
     }
-    
+
     $("#travel-time").html(duration.text);
     $(".travel-info").show();
     newPath(path, distance.value);
@@ -194,7 +194,7 @@ function plotElevation(elevations, status) {
     map.elevationData.locations = [];
     map.elevationData.elevation = [];
     for (i = 0; i < elevations.length; i++) {
-        
+
         // Change elevation from meters to feet.
         //console.log(measurementMode);
         if(measurementMode == "miles"){
@@ -203,18 +203,18 @@ function plotElevation(elevations, status) {
         else{
             feetMultiplicator = 1;
         }
-        
+
         map.elevationData.addRow([
             '',
             elevations[i].elevation * feetMultiplicator
         ]);
         map.elevationData.locations.push( elevations[i].location );
         map.elevationData.elevation.push( elevations[i].elevation * feetMultiplicator );
-        
+
     }
-    
+
     // Draw the chart using the data within its div.
-    
+
     elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
     elevationChart.draw(map.elevationData, {
         // width: 500,
@@ -296,9 +296,9 @@ function drawPolyline (elevations, slopes) {
         } else if (absSlope <= 10) {
             pathColor = "#FFFF00";
         } else if (absSlope <= 15) {
-            pathColor = "#3366FF";
+            pathColor = "#FF9800";
         } else if (absSlope <= 20) {
-            pathColor = "#FF0000";
+            pathColor = "#F44336";
         }
         else {
             pathColor = "#000000";
@@ -306,7 +306,7 @@ function drawPolyline (elevations, slopes) {
         mapPath = new google.maps.Polyline({
             path: routePath,
             strokeColor: pathColor,
-            strokeOpacity: 0.5,
+            strokeOpacity: 0.8,
             strokeWeight: 5,
             draggable: true
         });
