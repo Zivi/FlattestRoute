@@ -3,7 +3,7 @@
 <head>
 	<!-- link to themed version of bootstrap hosted on the internet -->
 <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
-	<link rel="stylesheet" type="text/css" href="css/main.css?ver=2">
+	<link rel="stylesheet" type="text/css" href="css/main.css?ver=3">
 
 	<title>Flattest Route</title>
 	<meta name="description" content="Put in the start and destination of your route. View the steepness of the roads along the way. You can choose from walking, biking, or driving. As featured in Hacker News.">
@@ -28,18 +28,31 @@
 							From: <input id="from" type="text" placeholder="Nob Hill, San Francisco, CA">
 						</label>
 					</div>
+					<div id="from-to-switcher"></div>
 					<div class="place-input">
 						<label>
 							To: <input id="to" type="text" placeholder="Russian Hill, San Francisco, CA">
 						</label>
 					</div>
+					<div class="place-input selector-wrapper">
+						<label for="travel-mode">Travel mode:</label>
+						<select id="travel-mode">
+							<option>Bicycling</option>
+							<option>Walking</option>
+							<option>Driving</option>
+						</select>
+						&nbsp;
+						<label for="measurement-mode">Units:</label>
+						<select id="measurement-mode">
+							<option value="miles">Miles</option>
+							<option value="km">Kilometres</option>
+						</select>
+					</div>
+					<div class="place-input">
+						<button class="btn" id="go">Go</button>
+					</div>
 				</div>
-				<button class="btn" id="go">Go</button>
-				<select id="travel-mode">
-					<option>Walking</option>
-					<option>Bicycling</option>
-					<option>Driving</option>
-				</select>
+
 
 			</div>
 		</form>
@@ -60,7 +73,7 @@
 					<td>5-10%</td>
 				</tr>
 				<tr>
-					<td><div class="color-index" id="blue"</div></td>
+					<td><div class="color-index" id="orange"</div></td>
 					<td>Difficult</td>
 					<td>10-15%</td>
 				</tr>
@@ -106,12 +119,12 @@
 	<div id="directionsPanel"></div>
 	<div class="row" id="author">
 		<div class="span6 offset4">
-			Created by <a href="http://www.twitter.com/z1v1">Zivi Weinstock </a> while attending <a href="http://www.hackbrightacademy.com">Hackbright Academy</a>.
+			Created by <a href="http://www.twitter.com/z1v1">Zivi Weinstock </a>
 		</div>
 	</div>
 	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0"></script>
 
-	<!--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> -->
+<!-- 	// <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>  -->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -131,4 +144,3 @@
 </body>
 
 </html>
-

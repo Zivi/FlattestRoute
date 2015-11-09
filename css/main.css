@@ -31,11 +31,11 @@
 #yellow {
 	background-color: #FFFF00;
 }
-#blue {
-	background-color: #3366FF;
+#orange {
+	background-color: #FF9800;
 }
 #red {
-	background-color: #FF0000;
+	background-color: #F44336;
 }
 #black {
 	background-color: #000000;
@@ -62,8 +62,37 @@ form input {
 	width: 480px;
 }
 
+form #from-to-switcher {
+	position: relative;
+	height: 16px;
+	width: 16px;
+	margin-top: -5px;
+	margin-left: 75%;
+	margin-bottom: -10px;
+	cursor: pointer;
+}
+
+form #from-to-switcher:after {
+	content : "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url(../img/fromToSwitcher.png);
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+	opacity : 0.45;
+	z-index: -1;
+}
+
+form #from-to-switcher:hover:after {
+	opacity : 1;
+}
+
 .btn {
 	border-radius: 30px;
+	margin-bottom: 20px;
 }
 
 .slope-label {
@@ -83,10 +112,18 @@ form input {
 	color: #999;
 }
 
-#travel-mode {
+#travel-mode, #measurement-mode {
 	width: 100px;
 	margin-left: 10px;
 	margin-top: 11px;
+}
+
+.selector-wrapper{
+	width: 400px;
+}
+
+.selector-wrapper input, .selector-wrapper label{
+	display:inline-block;
 }
 
 #travel-label {
@@ -100,13 +137,25 @@ form input {
 .travel-info {
 	display: none;
 }
+
+/* Portrait phones */
+@media (max-width: 320px){
+	.selector-wrapper{
+		width: 100%;
+	}
+
+	th, td{
+		font-size: 0.9em;
+	}
+}
+
 /* Landscape phones and down */
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
 
 	#map-canvas {
 		width: 100%;
 		height: 350px;
-	} 
+	}
 
 	#from,
 	#to {
@@ -128,13 +177,17 @@ form input {
 		visibility: hidden;
 	}
 
+	.selector-wrapper{
+		width: 240px;
+	}
+
 }
 
 @media (min-width: 769px) and (max-width: 980px) {
 #map-canvas {
 		width: 100%;
 		height: 350px;
-	} 
+	}
 
 	#from,
 	#to {
@@ -158,7 +211,7 @@ form input {
 #map-canvas {
 		width: 500px;
 		height: 350px;
-	} 
+	}
 
 	#from,
 	#to {
@@ -175,4 +228,7 @@ form input {
 		height: 175px;
 	}
 
+	form #from-to-switcher {
+		margin-left: 50%;
+	}
 }
