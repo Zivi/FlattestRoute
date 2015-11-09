@@ -2,7 +2,11 @@
 	width: 500px;
 	height: 500px;
 	background-color: #CCC;
+}
 
+#to,
+#from {
+	font-size: 16px;
 }
 
 #slope_chart,
