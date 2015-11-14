@@ -15,6 +15,10 @@
 	height: 250px;
 }
 
+.chart.hide {
+	display: none;
+}
+
 .table {
 	margin-left: 0px;
 	margin-bottom: 0px;
@@ -160,6 +164,10 @@ form #from-to-switcher:hover:after {
 	#from,
 	#to {
 		width: 100%;
+	}
+
+	form #from-to-switcher {
+		margin-left: 50%;
 	}
 
 	.table {

@@ -261,6 +261,7 @@ function plotSlope(elevations){
         legend: 'none',
         titleY: 'slope %'
     });
+    $('.chart').removeClass('hide');
     changeSlope(slopeChart, elevations, slopes);
 }
 function changeSlope(slopeChart, elevations, slopes) {
