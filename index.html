@@ -2,7 +2,9 @@
 <html>
 <head>
 	<!-- link to themed version of bootstrap hosted on the internet -->
-<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
+<!-- <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" > -->
+<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css?ver=3">
 
 	<title>Flattest Route</title>
@@ -14,14 +16,14 @@
 	<a href="https://github.com/Zivi/FlattestRoute"><img id="github" style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<div class="container">
 		<div class="row">
-			<div class="span4">
+			<div class="col-md-4">
 				<h1>Flattest Route</h1>
 			</div>
 		</div>
 
 	<div class="row">
 		<form id="routes">
-			<div class="span3">
+			<div class="col-md-3">
 				<div id="target" class="place-inputs">
 					<div class="place-input">
 						<label>
@@ -52,79 +54,41 @@
 						<button class="btn" id="go">Go</button>
 					</div>
 				</div>
-
-
 			</div>
 		</form>
-		<div class="span4 offset4">
-			<table class="table">
-				<th>
-					<td>Difficulty</td>
-					<td>% Grade</td>
-				</th>
-				<tr>
-					<td><div class="color-index" id="green"</div></td>
-					<td>Easy</td>
-					<td>&lt;5%</td>
-				</tr>
-				<tr>
-					<td><div class="color-index" id="yellow"</div></td>
-					<td>Moderate</td>
-					<td>5-10%</td>
-				</tr>
-				<tr>
-					<td><div class="color-index" id="orange"</div></td>
-					<td>Difficult</td>
-					<td>10-15%</td>
-				</tr>
-				<tr>
-					<td><div class="color-index" id="red"</div></td>
-					<td>Very Difficult</td>
-					<td>15-20%</td>
-				</tr>
-				<tr>
-					<td><div class="color-index" id="black"</div></td>
-					<td>Too *wheeze* steep</td>
-					<td>&gt;20%</td>
-				</tr>
-			</table>
+		<div class="col-md-4 .col-md-offset-4">
 				<div class="row travel-info">
-					<div class="span2">
+					<div class="col-md-2">
 						Distance:
 						<span id="distance"></span>
 					</div>
 				</div>
 				<div class="row travel-info">
-					<div class="span3" id="travel-label">
+					<div class="col-md-3" id="travel-label">
 						Travel Time:
 						<span id="travel-time"></span>
 					</div>
 				</div>
 		</div>
 	</div>
-
-
-
 	<div class="row">
 		<div>
-			<div class="span6" id="map-canvas"></div>
+			<div class="col-md-6" id="map-canvas"></div>
 		</div>
-		<div class="span5">
+		<div class="col-md-5">
 			<div class="chart hide" id="elevation_chart"></div>
-
 			<div class="chart hide" id="slope_chart"></div>
 		</div>
 	</div>
-
 	<div id="directionsPanel"></div>
 	<div class="row" id="author">
-		<div class="span6 offset4">
+		<div class="col-md-6 .col-md-offset-4">
 			Created by <a href="http://www.twitter.com/z1v1">Zivi Weinstock </a>
 		</div>
 	</div>
+</div>
 	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0"></script>
-
-<!-- 	// <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> --> 
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> -->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
