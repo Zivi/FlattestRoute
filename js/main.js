@@ -125,7 +125,7 @@ function calcRoute() {
     };
     var DirectionsService = new google.maps.DirectionsService();
     DirectionsService.route(request, function(result, status) {
-        if (status === "ZERO_RESULTS") {
+        if (status === "NOT_FOUND") {
             alert("No directions found.");
             return;
         }
