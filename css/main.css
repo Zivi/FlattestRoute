@@ -7,6 +7,8 @@
 #to,
 #from {
 	font-size: 16px;
+	max-width: 600px;
+	width: 100%;
 }
 
 #slope_chart,
@@ -68,11 +70,9 @@ form input {
 
 form #from-to-switcher {
 	position: relative;
-	height: 16px;
-	width: 16px;
-	margin-top: -5px;
-	margin-left: 75%;
-	margin-bottom: -10px;
+	margin: 10px 0 10px 10px;
+	left: 37.5%;
+	height: 20px;
 	cursor: pointer;
 }
 
@@ -161,15 +161,6 @@ form #from-to-switcher:hover:after {
 		height: 350px;
 	}
 
-	#from,
-	#to {
-		width: 100%;
-	}
-
-	form #from-to-switcher {
-		margin-left: 50%;
-	}
-
 	.table {
 		width: 100%;
 		margin-left: 0;
@@ -197,11 +188,6 @@ form #from-to-switcher:hover:after {
 		height: 350px;
 	}
 
-	#from,
-	#to {
-		width: 300px;
-	}
-
 	.table {
 		width: 300px;
 		margin-left: 0px;
@@ -221,11 +207,6 @@ form #from-to-switcher:hover:after {
 		height: 350px;
 	}
 
-	#from,
-	#to {
-		width: 300px;
-	}
-
 	.table {
 		width: 300px;
 	}
@@ -234,9 +215,5 @@ form #from-to-switcher:hover:after {
 	#elevation_chart {
 		width: 470px;
 		height: 175px;
-	}
-
-	form #from-to-switcher {
-		margin-left: 50%;
 	}
 }
