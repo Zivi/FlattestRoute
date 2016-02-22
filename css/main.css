@@ -94,11 +94,6 @@ form #from-to-switcher:hover:after {
 	opacity : 1;
 }
 
-.btn {
-	border-radius: 30px;
-	margin-bottom: 20px;
-}
-
 .slope-label {
 	position: relative;
 	top: -30px;
