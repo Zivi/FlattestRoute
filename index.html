@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- link to themed version of bootstrap hosted on the internet -->
-<!-- <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" > -->
+
 <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css?ver=3">
@@ -32,22 +31,25 @@
 						<div class="place-input">
 								<input id="to" type="text" placeholder="Type your destination">
 						</div>
-						<div class="place-input selector-wrapper">
-							<label for="travel-mode">Travel mode:</label>
-							<select id="travel-mode">
-								<option>Bicycling</option>
-								<option>Walking</option>
-								<option>Driving</option>
-							</select>
-							&nbsp;
-							<label for="measurement-mode">Units:</label>
-							<select id="measurement-mode">
-								<option value="miles">Miles</option>
-								<option value="km">Kilometres</option>
-							</select>
+
+						<div class="row place-input selector-wrapper">
+							<div class="col-md-4">
+								<select class="form-control" id="travel-mode">
+									<option>Bicycling</option>
+									<option>Walking</option>
+									<option>Driving</option>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<select class="form-control" id="measurement-mode">
+									<option value="miles">Miles</option>
+									<option value="km">Kilometres</option>
+								</select>
+							</div>
 						</div>
+
 						<div class="place-input">
-							<button class="btn" id="go">Go</button>
+							<button class="btn btn-primary" type="submit" id="go">Go</button>
 						</div>
 					</div>
 			</form>
@@ -83,8 +85,8 @@
 		</div>
 	</div>
 </div>
-	<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0"></script> -->
-	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0"></script>
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> -->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>

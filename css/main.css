@@ -112,103 +112,50 @@ form #from-to-switcher:hover:after {
 }
 
 #travel-mode, #measurement-mode {
-	width: 100px;
-	margin-left: 10px;
-	margin-top: 11px;
+
 }
 
 .selector-wrapper{
-	width: 400px;
+	/*width: 400px;*/
 }
 
 .selector-wrapper input, .selector-wrapper label{
-	display:inline-block;
+	/*display:inline-block;*/
 }
 
 #travel-label {
-	margin-bottom: 5px;
+	/*margin-bottom: 5px;*/
 }
 
 #distance {
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 
 .travel-info {
 	display: none;
 }
 
-/* Portrait phones */
-@media (max-width: 320px){
-	.selector-wrapper{
-		width: 100%;
-	}
-
-	th, td{
-		font-size: 0.9em;
-	}
-}
-
 /* Landscape phones and down */
 @media (max-width: 768px) {
 
 	#map-canvas {
-		width: 100%;
+		width: 95%;
 		height: 350px;
-	}
-
-	.table {
-		width: 100%;
-		margin-left: 0;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 100%;
-		height: 250px;
+		margin: 0 auto;
 	}
 
 	#github {
-		visibility: hidden;
+		display: none;
 	}
 
 	.selector-wrapper{
 		width: 240px;
 	}
-
 }
 
-@media (min-width: 769px) and (max-width: 980px) {
+@media (min-width: 769px) {
 #map-canvas {
 		width: 100%;
 		height: 350px;
-	}
-
-	.table {
-		width: 300px;
-		margin-left: 0px;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 750px;
-		height: 175px;
-	}
-
-}
-
-@media (min-width: 981px) and (max-width: 1200px) {
-#map-canvas {
-		width: 500px;
-		height: 350px;
-	}
-
-	.table {
-		width: 300px;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 470px;
-		height: 175px;
 	}
 }

@@ -216,7 +216,7 @@ function plotElevation(elevations, status) {
 
     elevationChart = new google.visualization.ColumnChart(elevationChartDiv.get(0));
     elevationChart.draw(map.elevationData, {
-        width: 500,
+        width: 350,
         height: 245,
         legend: 'none',
         titleY: 'Elevation ('+metricUnit+')'
@@ -255,7 +255,7 @@ function plotSlope(elevations){
 // Draw the chart using the slope data within its div.
     slopeChart = new google.visualization.ColumnChart(slopeChartDiv.get(0));
     slopeChart.draw(map.slopeData, {
-        width: 500,
+        width: 350,
         height: 245,
         legend: 'none',
         titleY: 'slope %'
