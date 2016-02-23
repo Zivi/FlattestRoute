@@ -11,6 +11,11 @@
 	width: 100%;
 }
 
+#go {
+	margin: 20px 0 20px 0;
+  width: 150px;
+}
+
 #slope_chart,
 #elevation_chart {
 	width: 500px;
@@ -116,19 +121,19 @@ form #from-to-switcher:hover:after {
 }
 
 .selector-wrapper{
-	/*width: 400px;*/
+
 }
 
 .selector-wrapper input, .selector-wrapper label{
-	/*display:inline-block;*/
+
 }
 
 #travel-label {
-	/*margin-bottom: 5px;*/
+
 }
 
 #distance {
-	/*margin-top: 10px;*/
+
 }
 
 .travel-info {
@@ -149,7 +154,7 @@ form #from-to-switcher:hover:after {
 	}
 
 	.selector-wrapper{
-		width: 240px;
+		padding-top: 20px;
 	}
 }
 
