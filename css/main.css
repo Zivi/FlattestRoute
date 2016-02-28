@@ -1,3 +1,7 @@
+body {
+	font-size: 16px;
+}
+
 #map-canvas {
 	width: 500px;
 	height: 500px;
@@ -7,7 +11,6 @@
 #to,
 #from {
 	font-size: 16px;
-	max-width: 600px;
 	width: 100%;
 }
 
@@ -18,8 +21,9 @@
 
 #slope_chart,
 #elevation_chart {
-	width: 500px;
+	width: 350px;
 	height: 250px;
+	padding-top: 20px;
 }
 
 .chart.hide {
@@ -117,7 +121,7 @@ form #from-to-switcher:hover:after {
 }
 
 .selector-wrapper{
-
+		padding-top: 20px;
 }
 
 .selector-wrapper input, .selector-wrapper label{
@@ -150,7 +154,7 @@ form #from-to-switcher:hover:after {
 	}
 
 	.selector-wrapper{
-		padding-top: 20px;
+		/*padding-top: 20px;*/
 	}
 }
 
