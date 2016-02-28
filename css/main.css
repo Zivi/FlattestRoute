@@ -74,25 +74,21 @@ form input {
 }
 
 form #from-to-switcher {
-	position: relative;
-	margin: 10px 0 10px 10px;
-	left: 37.5%;
-	height: 20px;
-	cursor: pointer;
+	height: 30px;
 }
 
 form #from-to-switcher:after {
 	content : "";
-	display: block;
+	display: inline-block;
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 35px;
+	left: 45%;
 	background-image: url(../img/fromToSwitcher.png);
 	background-repeat: no-repeat;
-	width: 100%;
+	width: 10%;
 	height: 100%;
 	opacity : 0.45;
-	z-index: -1;
+	z-index: 1;
 }
 
 form #from-to-switcher:hover:after {
@@ -117,7 +113,7 @@ form #from-to-switcher:hover:after {
 }
 
 #travel-mode, #measurement-mode {
-
+	font-size: 16px;
 }
 
 .selector-wrapper{
