@@ -1,3 +1,7 @@
+body {
+	font-size: 16px;
+}
+
 #map-canvas {
 	width: 500px;
 	height: 500px;
@@ -7,12 +11,19 @@
 #to,
 #from {
 	font-size: 16px;
+	width: 100%;
+}
+
+#go {
+	margin: 20px 0 20px 0;
+  width: 150px;
 }
 
 #slope_chart,
 #elevation_chart {
-	width: 500px;
+	width: 350px;
 	height: 250px;
+	padding-top: 20px;
 }
 
 .chart.hide {
@@ -67,36 +78,17 @@ form input {
 }
 
 form #from-to-switcher {
-	position: relative;
-	height: 16px;
-	width: 16px;
-	margin-top: -5px;
-	margin-left: 75%;
-	margin-bottom: -10px;
-	cursor: pointer;
-}
-
-form #from-to-switcher:after {
-	content : "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
 	background-image: url(../img/fromToSwitcher.png);
 	background-repeat: no-repeat;
-	width: 100%;
-	height: 100%;
-	opacity : 0.45;
-	z-index: -1;
+	margin-left: 45%;
+	margin-top: 10px;
+	opacity: 0.5;
+	height: 30px;
+	width: 44px;
 }
 
 form #from-to-switcher:hover:after {
 	opacity : 1;
-}
-
-.btn {
-	border-radius: 30px;
-	margin-bottom: 20px;
 }
 
 .slope-label {
@@ -117,126 +109,37 @@ form #from-to-switcher:hover:after {
 }
 
 #travel-mode, #measurement-mode {
-	width: 100px;
-	margin-left: 10px;
-	margin-top: 11px;
+	font-size: 16px;
 }
 
 .selector-wrapper{
-	width: 400px;
-}
-
-.selector-wrapper input, .selector-wrapper label{
-	display:inline-block;
-}
-
-#travel-label {
-	margin-bottom: 5px;
-}
-
-#distance {
-	margin-top: 10px;
+		padding-top: 20px;
 }
 
 .travel-info {
 	display: none;
 }
 
-/* Portrait phones */
-@media (max-width: 320px){
-	.selector-wrapper{
-		width: 100%;
-	}
-
-	th, td{
-		font-size: 0.9em;
-	}
-}
-
 /* Landscape phones and down */
 @media (max-width: 768px) {
-
 	#map-canvas {
-		width: 100%;
+		width: 95%;
 		height: 350px;
-	}
-
-	#from,
-	#to {
-		width: 100%;
-	}
-
-	form #from-to-switcher {
-		margin-left: 50%;
-	}
-
-	.table {
-		width: 100%;
-		margin-left: 0;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 100%;
-		height: 250px;
+		margin: 0 auto;
 	}
 
 	#github {
-		visibility: hidden;
+		display: none;
 	}
-
-	.selector-wrapper{
-		width: 240px;
+	
+	.travel-info {
+		margin-left: 0px;
 	}
-
 }
 
-@media (min-width: 769px) and (max-width: 980px) {
+@media (min-width: 769px) {
 #map-canvas {
 		width: 100%;
 		height: 350px;
-	}
-
-	#from,
-	#to {
-		width: 300px;
-	}
-
-	.table {
-		width: 300px;
-		margin-left: 0px;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 750px;
-		height: 175px;
-	}
-
-}
-
-@media (min-width: 981px) and (max-width: 1200px) {
-#map-canvas {
-		width: 500px;
-		height: 350px;
-	}
-
-	#from,
-	#to {
-		width: 300px;
-	}
-
-	.table {
-		width: 300px;
-	}
-
-	#slope_chart,
-	#elevation_chart {
-		width: 470px;
-		height: 175px;
-	}
-
-	form #from-to-switcher {
-		margin-left: 50%;
 	}
 }
