@@ -78,21 +78,13 @@ form input {
 }
 
 form #from-to-switcher {
-	height: 30px;
-}
-
-form #from-to-switcher:after {
-	content : "";
-	display: inline-block;
-	position: absolute;
-	top: 35px;
-	left: 45%;
 	background-image: url(../img/fromToSwitcher.png);
 	background-repeat: no-repeat;
-	width: 10%;
-	height: 100%;
-	opacity : 0.45;
-	z-index: 1;
+	margin-left: 45%;
+	margin-top: 10px;
+	opacity: 0.5;
+	height: 30px;
+	width: 44px;
 }
 
 form #from-to-switcher:hover:after {
@@ -124,25 +116,12 @@ form #from-to-switcher:hover:after {
 		padding-top: 20px;
 }
 
-.selector-wrapper input, .selector-wrapper label{
-
-}
-
-#travel-label {
-
-}
-
-#distance {
-
-}
-
 .travel-info {
 	display: none;
 }
 
 /* Landscape phones and down */
 @media (max-width: 768px) {
-
 	#map-canvas {
 		width: 95%;
 		height: 350px;
@@ -152,9 +131,9 @@ form #from-to-switcher:hover:after {
 	#github {
 		display: none;
 	}
-
-	.selector-wrapper{
-		/*padding-top: 20px;*/
+	
+	.travel-info {
+		margin-left: 0px;
 	}
 }
 
