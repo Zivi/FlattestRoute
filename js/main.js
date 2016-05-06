@@ -115,12 +115,17 @@ function initAutoComplete(field) {
 }
 
 function calcRoute() {
+    var unitSystem = google.maps.UnitSystem.IMPERIAL;
     var start = $("#from").val() || $("#from").attr("placeholder");
     var end = $("#to").val() || $("#to").attr("placeholder");
     var travelMode = $("#travel-mode").val();
+    if (measurementMode === "km") {
+      unitSystem = google.maps.UnitSystem.METRIC;
+    };
     var request = {
         origin: start,
         destination: end,
+        unitSystem: unitSystem,
         travelMode: google.maps.TravelMode[travelMode.toUpperCase()]
     };
     var DirectionsService = new google.maps.DirectionsService();
@@ -196,7 +201,7 @@ function plotElevation(elevations, status) {
     for (i = 0; i < elevations.length; i++) {
 
         // Change elevation from meters to feet.
-        if(measurementMode == "miles"){
+        if(measurementMode === "miles"){
             feetMultiplicator = 3.28084;
         }
         else{
