@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	 crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css?ver=3">
 
 	<title>Flattest Route</title>
 	<meta name="description" content="Put in the start and destination of your route. View the steepness of the roads along the way. You can choose from walking, biking, or driving. As featured in Hacker News.">
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
-	<a href="https://github.com/Zivi/FlattestRoute"><img id="github" style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<a href="https://github.com/Zivi/FlattestRoute"><img id="github" style="position: absolute; top: 0; right: 0; border: 0;"
+		 src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-8">
@@ -20,16 +23,16 @@
 			</div>
 		</div>
 
-	<div class="row">
-		<div class="col-xs-12 col-sm-8">
-			<form id="routes">
+		<div class="row">
+			<div class="col-xs-12 col-sm-8">
+				<form id="routes">
 					<div id="target" class="place-inputs">
 						<div class="place-input">
-								<input id="from" type="text" placeholder="Type a place to start your journey">
+							<input id="from" type="text" placeholder="Type a place to start your journey">
 						</div>
 						<div id="from-to-switcher"></div>
 						<div class="place-input">
-								<input id="to" type="text" placeholder="Type your destination">
+							<input id="to" type="text" placeholder="Type your destination">
 						</div>
 
 						<div class="row place-input selector-wrapper">
@@ -52,12 +55,12 @@
 							<button class="btn btn-primary" type="submit" id="go">Go</button>
 						</div>
 					</div>
-			</form>
-		</div>
-		<div class="col-xs-12 col-sm-4">
+				</form>
+			</div>
+			<div class="col-xs-12 col-sm-4">
 				<div class="row travel-info">
-						Distance:
-						<span id="distance"></span>
+					Distance:
+					<span id="distance"></span>
 				</div>
 				<div class="row travel-info">
 					<div id="travel-label">
@@ -65,42 +68,47 @@
 						<span id="travel-time"></span>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div>
+				<div class="col-md-6" id="map-canvas">
+					Due to Google Map's new pricing, I have taken the site offline.<br> The source code is still available for viewing on
+					GitHub
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12">
+				<div class="chart hide col-sm-6" id="elevation_chart"></div>
+				<div class="chart hide col-sm-6" id="slope_chart"></div>
+			</div>
+		</div>
+		<div id="directionsPanel"></div>
+		<div class="row" id="author">
+			<div class="col-md-6 .col-md-offset-4">
+				Created by <a href="http://www.twitter.com/z1v1">Zivi Weinstock </a>
+			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div>
-			<div class="col-md-6" id="map-canvas"></div>
-		</div>
-		<div class="col-xs-12 col-sm-12">
-			<div class="chart hide col-sm-6" id="elevation_chart"></div>
-			<div class="chart hide col-sm-6" id="slope_chart"></div>
-		</div>
-	</div>
-	<div id="directionsPanel"></div>
-	<div class="row" id="author">
-		<div class="col-md-6 .col-md-offset-4">
-			Created by <a href="http://www.twitter.com/z1v1">Zivi Weinstock </a>
-		</div>
-	</div>
-</div>
-	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=AIzaSyCOavQbPk8lvCNTUXzXXvvj02iej77Ldi0"></script>
 	<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script> -->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	 crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<script type="text/javascript" src="js/main.js?ver=2"></script>
 
-	 <script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-	  ga('create', 'UA-40731267-1', 'flattestroute.com');
-	  ga('send', 'pageview');
+		ga('create', 'UA-40731267-1', 'flattestroute.com');
+		ga('send', 'pageview');
 
-	 </script>
+	</script>
 </body>
 
 </html>
