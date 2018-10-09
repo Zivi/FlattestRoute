@@ -1,5 +1,10 @@
 # Flattest Route
 
-Latest version live at: http://www.flattestroute.com/
+Due to Google Map's new pricing, I have taken the site https://www.flattestroute.com/ offline.
 
-For some insight into how this was developed, see [this blog post](http://zivi.github.io/posts/iterating-to-success/).
+To run a local instance of the application:
+1. Download the zip file from the green "Clone or Download" button near the top of this page.
+2. Unzip the file.
+3. Double-click the extracted `index.html`
+
+Note: The may be a watermark added by Google saying "For development purposes only"
